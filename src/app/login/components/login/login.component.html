@@ -1,15 +1,21 @@
-<mat-form-field class="example-full-width" appearance="fill">
-  <mat-label>Email</mat-label>
-  <input type="email" matInput
-         placeholder="Ex. pat@example.com">
-  <mat-hint>Errors appear instantly!</mat-hint>
-</mat-form-field>
+<mat-card>
+  <form [formGroup]="loginForm" class="loginForm">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Gihub login</mat-label>
+        <input formControlName="name" type="text" matInput
+              placeholder="Ex. loginTest">
+      </mat-form-field>
 
-<mat-form-field class="example-full-width" appearance="fill">
-  <mat-label>Password</mat-label>
-  <input type="password" matInput>
-  <mat-hint>Errors appear instantly!</mat-hint>
-</mat-form-field>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input formControlName="password" type="password" matInput>
+      </mat-form-field>
+  </form>
 
-<button (click)="login()">Login</button>
+  <section class="buttons">
+    <button [disabled]="!loginForm.valid" (click)="login()" mat-raised-button color="primary">Detail</button>
+    <button mat-raised-button color="accent" routerLink="/users">Without login</button>
+  </section>
+
+</mat-card>
 

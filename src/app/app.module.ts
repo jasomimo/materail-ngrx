@@ -7,20 +7,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
+import {oneUserReducer, usersReducer} from './store/users/user.reducer';
+import { DetailGuard } from './guards/DetailGuard';
+import {MatButtonModule} from '@angular/material/button';
+
 
 @NgModule({
   declarations: [
-    AppComponent
-  ],
+    AppComponent,
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
     HttpClientModule,
-    StoreModule.forRoot({}, {}),
+    MatButtonModule,
+    StoreModule.forRoot({users: usersReducer, user: oneUserReducer}, {}),
+
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

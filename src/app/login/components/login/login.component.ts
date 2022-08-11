@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { GithubService } from 'src/app/services/github.service';
 
 @Component({
@@ -6,20 +8,25 @@ import { GithubService } from 'src/app/services/github.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent{
 
-  constructor(private githubService: GithubService) { }
+  loginForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
+  })
 
-  ngOnInit(): void {
-    // this.githubService.getData().subscribe(data => {
-    //   console.log(data)
-    // })
-  }
+  constructor(private githubService: GithubService, private router: Router) { }
+
 
   login(){
-    this.githubService.login('test', '321').subscribe(data => {
-      console.log(data)
-    })
+    const name = this.loginForm.controls['name'].value
+    const password = this.loginForm.controls['password'].value
+
+    if(name && password)
+      this.githubService.login(name, password).subscribe(data => {
+        console.log(data)
+        this.router.navigate(['/users'])
+      })
   }
 
 }

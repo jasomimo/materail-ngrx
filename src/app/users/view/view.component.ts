@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable, Subscribable } from 'rxjs';
+import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
 import { GithubService } from 'src/app/services/github.service';
+import { selectUsers } from 'src/app/store/users/user.selectors';
 
 @Component({
   selector: 'app-view',
@@ -8,9 +11,10 @@ import { GithubService } from 'src/app/services/github.service';
   styleUrls: ['./view.component.css']
 })
 export class ViewComponent implements OnInit {
-  users$: Observable<any>;
-  constructor(private githubService: GithubService) {
-    this.users$ = this.githubService.getUsers()
+
+  users$ = this.store.select(selectUsers)
+  constructor(private store: Store<{ users: DynamicFlatNode[] }>) {
+
    }
 
   ngOnInit(): void {

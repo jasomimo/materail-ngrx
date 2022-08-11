@@ -8,10 +8,24 @@ import {MatTreeModule} from '@angular/material/tree'
 import {MatIconModule} from '@angular/material/icon'
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatButtonModule} from '@angular/material/button';
+import { UserDetailComponent } from './components/user-detail/user-detail.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { UserCardComponent } from './components/user-detail/user-card/user-card.component';
+import {MatCardModule} from '@angular/material/card';
+import { RepoTableComponent } from './components/user-detail/repo-table/repo-table.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatSortModule} from '@angular/material/sort';
+import { DetailGuard } from '../guards/DetailGuard';
+
 @NgModule({
   declarations: [
     ViewComponent,
     UsersTreeComponent,
+    UserDetailComponent,
+    UserCardComponent,
+    RepoTableComponent,
+
   ],
   imports: [
     CommonModule,
@@ -19,7 +33,15 @@ import {MatButtonModule} from '@angular/material/button';
     MatTreeModule,
     MatIconModule,
     MatProgressBarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+  ],
+  providers: [
+    DetailGuard
   ]
 })
 export class UsersModule { }

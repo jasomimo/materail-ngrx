@@ -1,9 +1,11 @@
 export interface User {
   login: string;
-  fullName?: string;
-  profileImg?: string;
-  isOrganization?: boolean;
+  name?: string;
+  avatar_url?: string;
+  type?: boolean;
   email?: string;
   followers?: number;
-  publicRepo?: number;
+  public_repos?: number;
+  id?:number
+  repos_url?: string
 }

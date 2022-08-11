@@ -1,8 +1,11 @@
-<p>Tree</p>
+<button (click)="setUserInStore()" [disabled]="this.selectedNode.id < 0" mat-raised-button color="accent">
+  Detail
+</button>
+
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
     <button mat-icon-button disabled></button>
-    {{node.item}}
+    {{node.login}}
   </mat-tree-node>
   <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
     <button mat-icon-button
@@ -11,7 +14,7 @@
         {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
       </mat-icon>
     </button>
-    {{node.item}}
+    <mat-checkbox [checked]="this.selectedNode.id === node.id" (change)="handleChange(node)" class="checklist-leaf-node">{{node.login}}</mat-checkbox>
     <mat-progress-bar *ngIf="node.isLoading"
                       mode="indeterminate"
                       class="example-tree-progress-bar"></mat-progress-bar>

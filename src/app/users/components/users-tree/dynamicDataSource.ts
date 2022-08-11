@@ -53,11 +53,13 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
    * Toggle the node, remove from display list
    */
   toggleNode(node: DynamicFlatNode, expand: boolean) {
-    console.log(node)
+    // console.log(nodeInList)
+    // let node = {...nodeInList}
+
     if(node.repositories)
     this._database.getRepsitoriesOfUser(node.repositories).subscribe(allRepos => {
       const children:[{}] = allRepos
-
+      console.log('childer', children)
 
     const index = this.data.indexOf(node);
     if (!children || index < 0) {
@@ -65,13 +67,15 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       return;
     }
 
-    node.isLoading = true;
+    let myNode = {...node}
+    myNode.isLoading = true;
 
     // setTimeout(() => {
       if (expand) {
         const nodes = children.map(
+          //TODO treba dokoncit
           // @ts-ignore: Unreachable code error
-          name => new DynamicFlatNode(name.name, node.level + 1, false, false),
+          name => new DynamicFlatNode(name.id, name.name, myNode.level + 1, false, false),
         );
 
 
@@ -86,9 +90,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
         this.data.splice(index + 1, count);
       }
 
-      // notify the change
       this.dataChange.next(this.data);
-      node.isLoading = false;
+      myNode.isLoading = false;
     // }, 400);
   });
 

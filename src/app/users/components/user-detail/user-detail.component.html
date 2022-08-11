@@ -1,0 +1,10 @@
+<section class="userWrapper">
+  <button routerLink="/users" (click)="setUserInStore()" mat-raised-button color="accent">
+    Back
+  </button>
+
+  <app-user-card [user]="this.user"></app-user-card>
+
+  <app-repo-table></app-repo-table>
+
+</section>
