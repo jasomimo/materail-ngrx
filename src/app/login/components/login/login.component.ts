@@ -25,7 +25,7 @@ export class LoginComponent{
     if(name && password)
       this.githubService.login(name, password).subscribe(data => {
         console.log(data)
-        this.router.navigate(['/users'])
+        // this.router.navigate(['/users'])
       })
   }
 
