@@ -19,9 +19,9 @@ export class GithubService {
     return this.https.get<any>(url)
   }
 
-  login(name: string, password: string){
+  login(name: string, token: string){
     const headerDict = {
-      'LukaSK351' : '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'
+      name : token
     }
 
     const requestOptions = {
