@@ -10,36 +10,41 @@ import { RepoTableComponent } from './repo-table/repo-table.component';
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
-  styleUrls: ['./user-detail.component.css']
+  styleUrls: ['./user-detail.component.css'],
 })
 export class UserDetailComponent implements OnInit {
   @ViewChild(RepoTableComponent) tableComponent!: RepoTableComponent;
 
   showTable: any;
-  user: User = {login: ''};
+  user: User;
   repositories = [];
-  constructor(private store: Store, private githubService: GithubService,
-              private router: Router) { }
+  constructor(
+    private store: Store,
+    private githubService: GithubService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.store.select(selectOneUser).subscribe((user) => {
       this.user = user;
-      if(this.user.login === ''){
+      if (this.user.login === '') {
         this.router.navigate(['/users']);
       }
       this.openTable();
-    })
+    });
   }
 
-  setUserInStore(){
-      const user: User = {login: '', id: -1}
-        this.store.dispatch(setFullUser({user: user}))
-   }
+  setUserInStore() {
+    const user: User = { login: '', id: -1 };
+    this.store.dispatch(setFullUser({ user: user }));
+  }
 
-   openTable(){
-    if(this.user.repos_url)
-    this.githubService.getRepsitoriesOfUser(this.user.repos_url)?.subscribe(allRepos => {
-        this.tableComponent.setRepo(allRepos);
-    })
-   }
+  openTable() {
+    if (this.user.repos_url)
+      this.githubService
+        .getRepsitoriesOfUser(this.user.repos_url)
+        ?.subscribe((allRepos) => {
+          this.tableComponent.setRepo(allRepos);
+        });
+  }
 }

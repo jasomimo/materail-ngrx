@@ -2,6 +2,12 @@
   height: 40%;
 }
 
-.hiden{
-  visibility: hidden;
+.userWrapper{
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.backIcon{
+  cursor: pointer;
+  scale: 1.3;
 }

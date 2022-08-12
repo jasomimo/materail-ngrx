@@ -4,3 +4,9 @@
   max-width: 400px;
   margin-bottom: 8px;
 }
+
+span{
+  font-weight: 600;
+  color: black;
+  margin-left: 10px;
+}

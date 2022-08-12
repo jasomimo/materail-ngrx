@@ -20,4 +20,9 @@ export class ViewComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  logout(){
+    //TODO implement logout
+
+  }
+
 }

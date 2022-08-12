@@ -4,21 +4,22 @@ import { CommonModule } from '@angular/common';
 import { UsersRoutingModule } from './users-routing.module';
 import { ViewComponent } from './view/view.component';
 import { UsersTreeComponent } from './components/users-tree/users-tree.component';
-import {MatTreeModule} from '@angular/material/tree'
-import {MatIconModule} from '@angular/material/icon'
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatButtonModule} from '@angular/material/button';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatButtonModule } from '@angular/material/button';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UserCardComponent } from './components/user-detail/user-card/user-card.component';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { RepoTableComponent } from './components/user-detail/repo-table/repo-table.component';
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import { MatSortModule} from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 import { DetailGuard } from '../guards/DetailGuard';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,6 @@ import { FormsModule } from '@angular/forms';
     UserDetailComponent,
     UserCardComponent,
     RepoTableComponent,
-
   ],
   imports: [
     CommonModule,
@@ -42,10 +42,9 @@ import { FormsModule } from '@angular/forms';
     MatPaginatorModule,
     MatSortModule,
     MatSlideToggleModule,
-    FormsModule
+    FormsModule,
+    MatToolbarModule,
   ],
-  providers: [
-    DetailGuard
-  ]
+  providers: [DetailGuard],
 })
-export class UsersModule { }
+export class UsersModule {}

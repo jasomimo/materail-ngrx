@@ -16,3 +16,18 @@ form{
   align-items: center;
   gap: 10px;
 }
+
+.spinner{
+  position: absolute;
+}
+
+.blurBackground{
+  opacity: 0.5;
+}
+
+.loginWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90%;
+}

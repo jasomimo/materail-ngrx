@@ -1,16 +1,19 @@
-
 <mat-card class="example-card">
   <mat-card-title-group>
-    <mat-card-title>{{user.login}}</mat-card-title>
-    <mat-card-subtitle>{{user.name}}</mat-card-subtitle>
-    <img mat-card-sm-image [src]="this.user.avatar_url" >
+    <mat-card-title>{{ user.login }}</mat-card-title>
+    <mat-card-subtitle>{{ user.name }}</mat-card-subtitle>
+    <img mat-card-sm-image [src]="this.user.avatar_url" />
   </mat-card-title-group>
   <mat-card-content>
-    <mat-card-title>Followers: {{this.user.followers}}</mat-card-title>
-    <mat-card-title>Public Repos: {{this.user.public_repos}}</mat-card-title>
-    <mat-card-title>{{user.email}}</mat-card-title>
-
+    <mat-card-subtitle
+      >Followers: <span>{{ this.user.followers }}</span></mat-card-subtitle
+    >
+    <mat-card-subtitle
+      >Public Repos:
+      <span>{{ this.user.public_repos }}</span></mat-card-subtitle
+    >
+    <mat-card-subtitle *ngIf="user.email !== null"
+      >Email: <span>{{ user.email }}</span></mat-card-subtitle
+    >
   </mat-card-content>
 </mat-card>
-
-

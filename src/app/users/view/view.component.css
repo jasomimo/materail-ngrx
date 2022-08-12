@@ -1,4 +1,14 @@
-.headerWrapper{
-  display: flex;
-  justify-content: flex-end;
+
+.logoutIcon{
+  cursor: pointer;
+  margin: 10px;
+  scale: 1.2;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.contentWrapper{
+  margin: 20px;
 }

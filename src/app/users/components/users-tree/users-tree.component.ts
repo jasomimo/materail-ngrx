@@ -1,7 +1,6 @@
-import { CollectionViewer, SelectionChange, SelectionModel } from '@angular/cdk/collections';
+import {} from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, Injectable, OnInit } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { Route, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, merge, map } from 'rxjs';
@@ -10,62 +9,80 @@ import { ExampleFlatNode } from 'src/app/models/ExampleFlatNode';
 import { GithubService } from 'src/app/services/github.service';
 import { addNewUsers, setFullUser } from 'src/app/store/users/user.actions';
 import { selectUsers } from 'src/app/store/users/user.selectors';
-import {UserNode} from '../../../models/UserNode'
+import { FullUser } from '../../../models/FullUser';
 import { DynamicDataSource } from './dynamicDataSource';
-
 
 @Component({
   selector: 'app-users-tree',
   templateUrl: './users-tree.component.html',
-  styleUrls: ['./users-tree.component.css']
+  styleUrls: ['./users-tree.component.css'],
 })
-export class UsersTreeComponent{
-
+export class UsersTreeComponent {
   treeControl: FlatTreeControl<DynamicFlatNode>;
   dataSource: DynamicDataSource;
-  public selectedNode: DynamicFlatNode = {expandable: false, isLoading: false, login: '', level: -1, id: -1}
+  public selectedNode: DynamicFlatNode = {
+    expandable: false,
+    isLoading: false,
+    login: '',
+    level: -1,
+    id: -1,
+  };
 
-
-  constructor(private githubService: GithubService, private store: Store<{ users: DynamicFlatNode[] }> ,
-            private router: Router) {
+  constructor(
+    private githubService: GithubService,
+    private store: Store<{ users: DynamicFlatNode[] }>,
+    private router: Router
+  ) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(
       this.getLevel,
       this.isExpandable
     );
-    this.dataSource = new DynamicDataSource(this.treeControl, this.githubService);
+    this.dataSource = new DynamicDataSource(
+      this.treeControl,
+      this.githubService,
+      store
+    );
 
-    this.store.select(selectUsers).subscribe(users => {
-      this.dataSource.data = [...users]
-    })
+    this.store.select(selectUsers).subscribe((users) => {
+      this.dataSource.data = [...users];
+    });
 
-    if(this.dataSource.data.length === 0){
-      this.githubService.getUsers().subscribe(allUsers => {
-        const myselect: DynamicFlatNode[] = allUsers
-        .map((p: { id: number; login: string; repos_url: string}) => {
-          return { id: p.id, login: p.login, level: 1, expandable: true, isLoading: false, repositories: p.repos_url } });
-              myselect.forEach(oneUser => {
-                this.store.dispatch(addNewUsers({users: oneUser}))
-
-              })
-      })
+    if (this.dataSource.data.length === 0) {
+      this.githubService.getUsers().subscribe((allUsers) => {
+        const myselect: DynamicFlatNode[] = allUsers.map((p: FullUser) => {
+          return {
+            id: p.id,
+            login: p.login,
+            level: 1,
+            expandable: true,
+            isLoading: false,
+            repositories: p.repos_url,
+            publicRepo: p.repos_url,
+          };
+        });
+        myselect.forEach((oneUser) => {
+          this.store.dispatch(addNewUsers({ users: oneUser }));
+        });
+      });
     }
+  }
 
-   }
-
-   handleChange(node: DynamicFlatNode){
-    if(this.selectedNode.id === node.id){
-      this.selectedNode.id = -1
-    }else{
-      this.selectedNode = {...node};
+  handleChange(node: DynamicFlatNode) {
+    if (this.selectedNode.id === node.id) {
+      this.selectedNode.id = -1;
+    } else {
+      this.selectedNode = { ...node };
     }
-   }
+  }
 
-   setUserInStore(){
-      this.githubService.getFullUser(this.selectedNode.login).subscribe(fullUser => {
-        this.store.dispatch(setFullUser({user: fullUser}))
+  setUserInStore() {
+    this.githubService
+      .getFullUser(this.selectedNode.login)
+      .subscribe((fullUser) => {
+        this.store.dispatch(setFullUser({ user: fullUser }));
         this.router.navigate(['/users/detail']);
-      })
-   }
+      });
+  }
 
   getLevel = (node: DynamicFlatNode) => {
     return node.level;
@@ -78,7 +95,4 @@ export class UsersTreeComponent{
   hasChild = (_: number, _nodeData: DynamicFlatNode) => {
     return _nodeData.expandable;
   };
-
-
-
 }
