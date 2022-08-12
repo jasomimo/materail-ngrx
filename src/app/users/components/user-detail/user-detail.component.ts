@@ -15,7 +15,7 @@ import { RepoTableComponent } from './repo-table/repo-table.component';
 export class UserDetailComponent implements OnInit {
   @ViewChild(RepoTableComponent) tableComponent!: RepoTableComponent;
 
-
+  showTable: any;
   user: User = {login: ''};
   repositories = [];
   constructor(private store: Store, private githubService: GithubService,
@@ -42,5 +42,4 @@ export class UserDetailComponent implements OnInit {
         this.tableComponent.setRepo(allRepos);
     })
    }
-
 }

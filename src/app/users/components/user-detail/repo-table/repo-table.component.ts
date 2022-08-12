@@ -5,6 +5,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import { Repo } from 'src/app/models/Repo';
 import { User } from 'src/app/models/User';
 import { GithubService } from 'src/app/services/github.service';
+import {LiveAnnouncer} from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-repo-table',
@@ -12,7 +13,7 @@ import { GithubService } from 'src/app/services/github.service';
   styleUrls: ['./repo-table.component.css']
 })
 export class RepoTableComponent {
-  displayedColumns: string[] = ['name', 'desc', 'stars', 'watchers', 'created', 'updated'];
+  displayedColumns: string[] = ['name', 'description', 'stargazers_count', 'watchers', 'created_at', 'updated_at'];
   dataSource: MatTableDataSource<Repo>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -21,7 +22,7 @@ export class RepoTableComponent {
 
   repositories: Repo[] = [];
 
-  constructor(private githubService: GithubService) {
+  constructor(private githubService: GithubService, private _liveAnnouncer: LiveAnnouncer) {
     this.dataSource = new MatTableDataSource(this.repositories);
    }
 
@@ -62,6 +63,19 @@ export class RepoTableComponent {
 
   compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
+
+  /** Announce the change in sort state for assistive technology. */
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 
 }

@@ -4,7 +4,8 @@
   </button>
 
   <app-user-card [user]="this.user"></app-user-card>
+  <mat-slide-toggle [(ngModel)]="showTable">Show repositories</mat-slide-toggle>
 
-  <app-repo-table></app-repo-table>
+  <app-repo-table [ngClass]="{'hiden' : !showTable}"></app-repo-table>
 
 </section>

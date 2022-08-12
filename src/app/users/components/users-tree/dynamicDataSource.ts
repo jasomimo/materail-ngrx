@@ -58,7 +58,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
     if(node.repositories)
     this._database.getRepsitoriesOfUser(node.repositories).subscribe(allRepos => {
-      const children:[{}] = allRepos
+      const children= allRepos
       console.log('childer', children)
 
     const index = this.data.indexOf(node);
@@ -70,11 +70,10 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     let myNode = {...node}
     myNode.isLoading = true;
 
-    // setTimeout(() => {
+
+    setTimeout(() => {
       if (expand) {
         const nodes = children.map(
-          //TODO treba dokoncit
-          // @ts-ignore: Unreachable code error
           name => new DynamicFlatNode(name.id, name.name, myNode.level + 1, false, false),
         );
 
@@ -92,7 +91,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
       this.dataChange.next(this.data);
       myNode.isLoading = false;
-    // }, 400);
+    }, 400);
   });
 
   }

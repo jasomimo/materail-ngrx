@@ -1,6 +1,6 @@
-<button (click)="setUserInStore()" [disabled]="this.selectedNode.id < 0" mat-raised-button color="accent">
+<!-- <button  [disabled]="this.selectedNode.id < 0" mat-raised-button color="accent">
   Detail
-</button>
+</button> -->
 
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
@@ -15,6 +15,9 @@
       </mat-icon>
     </button>
     <mat-checkbox [checked]="this.selectedNode.id === node.id" (change)="handleChange(node)" class="checklist-leaf-node">{{node.login}}</mat-checkbox>
+    <button (click)="setUserInStore()" class="buttonMargin" mat-raised-button color="primary"
+            *ngIf="this.selectedNode.id === node.id">Detail
+    </button>
     <mat-progress-bar *ngIf="node.isLoading"
                       mode="indeterminate"
                       class="example-tree-progress-bar"></mat-progress-bar>

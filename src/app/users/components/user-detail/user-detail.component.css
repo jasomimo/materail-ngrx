@@ -1,3 +1,7 @@
 .userWrapper{
   height: 40%;
 }
+
+.hiden{
+  visibility: hidden;
+}

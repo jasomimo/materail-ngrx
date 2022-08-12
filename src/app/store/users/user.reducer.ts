@@ -3,7 +3,7 @@ import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
 import { User } from 'src/app/models/User';
 
 
-import { addNewUsers, retrieveUsers, setFullUser, retrieveFullUser } from './user.actions';
+import { addNewUsers, retrieveUsers, setFullUser, retrieveFullUser, updateUserInList } from './user.actions';
 
 export const usersList: ReadonlyArray<DynamicFlatNode> = [];
 export const userDetail: Readonly<User>  = {
@@ -17,6 +17,11 @@ export const usersReducer = createReducer(
   on(addNewUsers, (state, { users }) => {
     return [...state, users];
   }),
+  // on(updateUserInList, (state, { user }) => {
+
+  //   return [...state, users];
+  // }),
+
 );
 export const oneUserReducer = createReducer(
   userDetail,

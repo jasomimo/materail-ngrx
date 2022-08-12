@@ -20,19 +20,18 @@ export class GithubService {
   }
 
   login(name: string, token: string){
-    const headerDict = {
-      name : token
-    }
-
-    const requestOptions = {
-      headers: new HttpHeaders (headerDict),
+    let requestOptions = {
+      headers: new HttpHeaders ({
+        'Authorization': 'Basic' + btoa('LukaSK351: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')
+      }),
     };
+
 
       const url = 'https://api.github.com/user';
       return this.https.get(url, requestOptions)
   }
   getRepsitoriesOfUser(url: string){
-    return this.https.get<[Repo]>(url);
+    return this.https.get<Repo[]>(url);
   }
   getFullUser(login: string){
     const url = 'https://api.github.com/users/' + login;
