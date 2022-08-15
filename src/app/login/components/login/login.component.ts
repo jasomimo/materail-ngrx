@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GithubService } from 'src/app/services/github.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
+import { setLoggedUser } from 'src/app/store/users/user.actions';
 
 @Component({
   selector: 'app-login',
@@ -11,27 +13,26 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class LoginComponent {
   loginForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    token: new FormControl('', Validators.required),
   });
 
   showSpinner = false;
   constructor(
     private githubService: GithubService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private store: Store<{}>
   ) {}
 
   login() {
     this.showSpinner = true;
-    const name = this.loginForm.controls['name'].value;
-    const password = this.loginForm.controls['password'].value;
+    const token = this.loginForm.controls['token'].value;
 
-    if (name && password)
-      this.githubService.login(name, password).subscribe(
+    if (token)
+      this.githubService.login(token).subscribe(
         (data) => {
-          console.log(data);
-          // this.router.navigate(['/users'])
+          this.store.dispatch(setLoggedUser({ user: data }));
+          this.router.navigate(['/users']);
           this.showSpinner = false;
         },
         (error) => {

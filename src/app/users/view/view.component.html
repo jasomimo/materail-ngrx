@@ -1,16 +1,4 @@
-<mat-toolbar>
-  <button
-    mat-icon-button
-    class="example-icon"
-    aria-label="Example icon-button with menu icon"
-  ></button>
-  <span>Angular</span>
-  <span class="example-spacer"></span>
-
-  <i routerLink="/" class="material-icons logoutIcon" (click)="logout()"
-    >logout</i
-  >
-</mat-toolbar>
+<app-header></app-header>
 <content class="contentWrapper">
   <router-outlet></router-outlet>
 </content>

@@ -16,11 +16,10 @@ import { RepoTableComponent } from './components/user-detail/repo-table/repo-tab
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { DetailGuard } from '../guards/DetailGuard';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
-
+import { HeaderComponent } from '../header/header.component';
 @NgModule({
   declarations: [
     ViewComponent,
@@ -28,6 +27,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     UserDetailComponent,
     UserCardComponent,
     RepoTableComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +45,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     FormsModule,
     MatToolbarModule,
   ],
-  providers: [DetailGuard],
+  providers: [],
 })
 export class UsersModule {}

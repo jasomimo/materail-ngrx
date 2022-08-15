@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UsersResolver } from '../resolvers/users.resolver';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { UsersTreeComponent } from './components/users-tree/users-tree.component';
 import { ViewComponent } from './view/view.component';
-import { DetailGuard } from '../guards/DetailGuard';
 
 const routes: Routes = [
   {
@@ -15,9 +15,9 @@ const routes: Routes = [
         component: UsersTreeComponent, // child route component that the router renders
       },
       {
-        path: 'detail',
+        path: ':login',
         component: UserDetailComponent,
-        canActivate: [DetailGuard] // another child route component that the router renders
+        resolve: { newUser: UsersResolver },
       },
     ],
   },
@@ -25,6 +25,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class UsersRoutingModule { }
+export class UsersRoutingModule {}

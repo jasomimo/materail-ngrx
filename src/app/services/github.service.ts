@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/User';
-import { ExampleFlatNode } from '../models/ExampleFlatNode';
 import { FullUser } from '../models/FullUser';
 import { Repo } from '../models/Repo';
+import { DynamicFlatNode } from '../models/DynamicFlatNode';
 
 @Injectable({
   providedIn: 'root',
@@ -14,18 +14,17 @@ export class GithubService {
 
   getUsers() {
     const url = 'https://api.github.com/users';
-    return this.https.get<any>(url);
+    return this.https.get<FullUser[]>(url);
   }
 
-  login(name: string, token: string) {
+  login(token: string) {
     let requestOptions = {
       headers: new HttpHeaders({
-        Authorization:
-          'Basic' + btoa('LukaSK351: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'),
+        Authorization: 'token ' + token,
       }),
     };
     const url = 'https://api.github.com/user';
-    return this.https.get(url, requestOptions);
+    return this.https.get<User>(url, requestOptions);
   }
   getRepsitoriesOfUser(url: string) {
     return this.https.get<Repo[]>(url);

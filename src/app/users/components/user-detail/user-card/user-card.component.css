@@ -1,7 +1,7 @@
 
 .example-card {
-  max-height: 40%;
-  max-width: 400px;
+  width: fit-content;
+  min-width: 300px;
   margin-bottom: 8px;
 }
 
@@ -9,4 +9,8 @@ span{
   font-weight: 600;
   color: black;
   margin-left: 10px;
+}
+
+mat-card-title-group{
+  gap: 20px;
 }

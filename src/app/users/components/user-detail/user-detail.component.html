@@ -1,15 +1,11 @@
 <section class="userWrapper">
-  <i
-    routerLink="/users"
-    (click)="setUserInStore()"
-    class="material-icons backIcon"
-    >arrow_back</i
-  >
-  <!-- <button  mat-raised-button color="accent">
-    Back
-  </button> -->
+  <i routerLink="/users" class="material-icons backIcon">arrow_back</i>
+  <content *ngIf="this.user && this.user.id >= 0; else noData">
+    <app-user-card [user]="this.user"></app-user-card>
+    <app-repo-table></app-repo-table>
+  </content>
 
-  <app-user-card [user]="this.user"></app-user-card>
-
-  <app-repo-table></app-repo-table>
+  <ng-template #noData>
+    <mat-card>No data</mat-card>
+  </ng-template>
 </section>

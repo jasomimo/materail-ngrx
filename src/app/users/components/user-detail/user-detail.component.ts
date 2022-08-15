@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/User';
 import { GithubService } from 'src/app/services/github.service';
@@ -21,25 +21,18 @@ export class UserDetailComponent implements OnInit {
   constructor(
     private store: Store,
     private githubService: GithubService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.store.select(selectOneUser).subscribe((user) => {
-      this.user = user;
-      if (this.user.login === '') {
-        this.router.navigate(['/users']);
-      }
-      this.openTable();
+    this.activatedRoute.data.subscribe((response) => {
+      this.user = response['newUser'];
+      this.getUserRepos();
     });
   }
 
-  setUserInStore() {
-    const user: User = { login: '', id: -1 };
-    this.store.dispatch(setFullUser({ user: user }));
-  }
-
-  openTable() {
+  getUserRepos() {
     if (this.user.repos_url)
       this.githubService
         .getRepsitoriesOfUser(this.user.repos_url)

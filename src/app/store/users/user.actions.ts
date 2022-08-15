@@ -34,10 +34,10 @@ export const setFullUser = createAction(
   props<{ user: User }>()
 );
 
-export const loadLogin = createAction('[Photo List] Load Photos');
-export const loadLoginError = createAction('[Photo List] Load Photos Error');
+//logged user
+export const retrieveLoggedUser = createAction('[One user] Retrieve user');
 
-export const loginUserSuccess = createAction(
-  '[Login user] Login user to github',
-  props<any>()
+export const setLoggedUser = createAction(
+  '[One user] Set user',
+  props<{ user: User }>()
 );

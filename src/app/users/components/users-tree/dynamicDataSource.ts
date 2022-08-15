@@ -9,7 +9,11 @@ import { BehaviorSubject, Observable, merge, map } from 'rxjs';
 import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
 import { Repo } from 'src/app/models/Repo';
 import { GithubService } from 'src/app/services/github.service';
-import { updateUserInList } from 'src/app/store/users/user.actions';
+import {
+  updateAllList,
+  updateUserInList,
+} from 'src/app/store/users/user.actions';
+import { selectUsers } from 'src/app/store/users/user.selectors';
 
 export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
@@ -93,22 +97,21 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
           let myNode = { ...node };
           myNode.isLoading = true;
 
-          setTimeout(() => {
-            const nodes = children.map(
-              (name) =>
-                new DynamicFlatNode(
-                  name.id,
-                  name.name,
-                  myNode.level + 1,
-                  false,
-                  false
-                )
-            );
+          const nodes = children.map(
+            (name) =>
+              new DynamicFlatNode(
+                name.id,
+                name.name,
+                myNode.level + 1,
+                false,
+                false
+              )
+          );
 
-            this.data.splice(index + 1, 0, ...nodes);
-            this.dataChange.next(this.data);
-            myNode.isLoading = false;
-          }, 400);
+          this.data.splice(index + 1, 0, ...nodes);
+          this.dataChange.next(this.data);
+          myNode.isLoading = false;
+          // this.store.dispatch(updateUserInList({ user: myClosingNode }));
         });
   }
 }

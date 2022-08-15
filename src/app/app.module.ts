@@ -7,8 +7,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
-import { oneUserReducer, usersReducer } from './store/users/user.reducer';
-import { DetailGuard } from './guards/DetailGuard';
+import {
+  loginReducer,
+  oneUserReducer,
+  usersReducer,
+} from './store/users/user.reducer';
 import { MatButtonModule } from '@angular/material/button';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffect } from './store/users/user.effects';
@@ -22,7 +25,10 @@ import { UserEffect } from './store/users/user.effects';
     MatFormFieldModule,
     HttpClientModule,
     MatButtonModule,
-    StoreModule.forRoot({ users: usersReducer, user: oneUserReducer }, {}),
+    StoreModule.forRoot(
+      { users: usersReducer, user: oneUserReducer, loggedUser: loginReducer },
+      {}
+    ),
     EffectsModule.forRoot([UserEffect]),
   ],
   providers: [],

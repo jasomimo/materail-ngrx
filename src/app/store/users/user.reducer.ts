@@ -9,14 +9,27 @@ import {
   retrieveFullUser,
   updateUserInList,
   updateAllList,
-  loginUserSuccess,
+  setLoggedUser,
+  retrieveLoggedUser,
 } from './user.actions';
 
 export const usersList: ReadonlyArray<DynamicFlatNode> = [];
 export const userDetail: Readonly<User> = {
   login: '',
+  name: '',
+  avatar_url: '',
+  followers: 0,
+  public_repos: 0,
+  id: -1,
 };
-export const loginUser: any = {};
+export const loggedUser: User = {
+  login: '',
+  name: '',
+  avatar_url: '',
+  followers: 0,
+  public_repos: 0,
+  id: -1,
+};
 
 export const usersReducer = createReducer(
   usersList,
@@ -45,6 +58,9 @@ export const oneUserReducer = createReducer(
 );
 
 export const loginReducer = createReducer(
-  loginUser,
-  on(loginUserSuccess, (state, { user }) => user)
+  loggedUser,
+  on(retrieveLoggedUser, (state) => state),
+  on(setLoggedUser, (state, { user }) => {
+    return { ...user };
+  })
 );
