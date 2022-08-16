@@ -96,7 +96,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
           let myNode = { ...node };
           myNode.isLoading = true;
-
+          // this.store.dispatch(updateUserInList({ user: myNode }));
           const nodes = children.map(
             (name) =>
               new DynamicFlatNode(
@@ -110,8 +110,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
           this.data.splice(index + 1, 0, ...nodes);
           this.dataChange.next(this.data);
-          myNode.isLoading = false;
-          // this.store.dispatch(updateUserInList({ user: myClosingNode }));
+          // myNode.isLoading = false;
+          // this.store.dispatch(updateAllList({ user: this.data }));
         });
   }
 }

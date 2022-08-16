@@ -16,7 +16,7 @@ export class LoginComponent {
     token: new FormControl('', Validators.required),
   });
 
-  showSpinner = false;
+  loading = false;
   constructor(
     private githubService: GithubService,
     private router: Router,
@@ -25,7 +25,7 @@ export class LoginComponent {
   ) {}
 
   login() {
-    this.showSpinner = true;
+    this.loading = true;
     const token = this.loginForm.controls['token'].value;
 
     if (token)
@@ -33,11 +33,11 @@ export class LoginComponent {
         (data) => {
           this.store.dispatch(setLoggedUser({ user: data }));
           this.router.navigate(['/users']);
-          this.showSpinner = false;
+          this.loading = false;
         },
         (error) => {
           console.log(error);
-          this.showSpinner = false;
+          this.loading = false;
           this.openSnackBar(error.error.message, 'Ok');
         }
       );

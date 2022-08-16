@@ -1,5 +1,10 @@
 <section class="loginWrapper">
-  <mat-card [ngClass]="{ blurBackground: showSpinner }">
+  <mat-card [ngClass]="{ blurBackground: loading }">
+    <header>
+      <img class="logos" src="../../../../assets/angular.svg" />
+      <img class="logos" src="../../../../assets/ngrx.svg" />
+    </header>
+
     <form [formGroup]="loginForm" class="loginForm">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Github personal token</mat-label>
@@ -9,16 +14,16 @@
 
     <section class="buttons">
       <button
-        [disabled]="!loginForm.valid || showSpinner"
+        [disabled]="!loginForm.valid || loading"
         (click)="login()"
         mat-raised-button
       >
         Login
       </button>
-      <button mat-raised-button routerLink="/users" [disabled]="showSpinner">
+      <button mat-raised-button routerLink="/users" [disabled]="loading">
         Without login
       </button>
     </section>
-    <mat-spinner class="spinner" *ngIf="showSpinner"></mat-spinner>
+    <mat-spinner class="spinner" *ngIf="loading"></mat-spinner>
   </mat-card>
 </section>

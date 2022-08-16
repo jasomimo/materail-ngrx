@@ -53,6 +53,7 @@ export class UsersTreeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let test = true;
     this.store.select(selectUsers).subscribe((users) => {
       this.dataSource.data = [...users];
     });
@@ -101,8 +102,9 @@ export class UsersTreeComponent implements OnInit {
 
   setUserInStore(fullUser: DynamicFlatNode) {
     this.loading = true;
-    this.router.navigate(['/users/' + fullUser.login]);
-    this.loading = false;
+    this.router.navigate(['/users/' + fullUser.login]).then(() => {
+      this.loading = false;
+    });
   }
 
   getLevel = (node: DynamicFlatNode) => {
