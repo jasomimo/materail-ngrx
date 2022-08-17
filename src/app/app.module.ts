@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {
   loginReducer,
   oneUserReducer,
@@ -26,6 +27,7 @@ import { UserEffect } from './store/users/user.effects';
       {}
     ),
     EffectsModule.forRoot([UserEffect]),
+    StoreDevtoolsModule.instrument({ maxAge: 50 })
   ],
   providers: [],
   bootstrap: [AppComponent],
