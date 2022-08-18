@@ -11,4 +11,5 @@
 .backIcon{
     cursor: pointer;
     transform: scale(1.2);
+    margin-bottom: 13px;
 }

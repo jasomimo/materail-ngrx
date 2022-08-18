@@ -13,6 +13,8 @@ import {
 } from './store/users/user.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffect } from './store/users/user.effects';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './strategy/custom-route-reuse.strategy';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,12 +24,18 @@ import { UserEffect } from './store/users/user.effects';
     BrowserAnimationsModule,
     HttpClientModule,
     StoreModule.forRoot(
-      { users: usersReducer, user: oneUserReducer, loggedUser: loginReducer },
+      {
+        users: usersReducer,
+        fullUser: oneUserReducer,
+        loggedUser: loginReducer,
+      },
       {}
     ),
     EffectsModule.forRoot([UserEffect]),
   ],
-  providers: [],
   bootstrap: [AppComponent],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
+  ],
 })
 export class AppModule {}

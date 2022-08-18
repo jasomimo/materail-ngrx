@@ -9,7 +9,7 @@ import { setLoggedUser } from 'src/app/store/users/user.actions';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   loginForm = new FormGroup({
@@ -32,7 +32,7 @@ export class LoginComponent {
       this.githubService.login(token).subscribe(
         (data) => {
           this.store.dispatch(setLoggedUser({ user: data }));
-          this.router.navigate(['/users']);
+          this.router.navigate(['/users/list']);
           this.loading = false;
         },
         (error) => {

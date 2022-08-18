@@ -1,3 +1,6 @@
+@import "../../../../scss/mixins.scss";
+
+
 mat-card{
   display: flex;
   flex-direction: column;
@@ -22,7 +25,7 @@ form{
 }
 
 .blurBackground{
-  opacity: 0.5;
+  @include blurBackgroud
 }
 
 .loginWrapper{
@@ -32,6 +35,11 @@ form{
   height: 90%;
 }
 
-.logos{
+.logosWrapper{
+  display: flex;
+  align-items: center;
+}
+
+.logo{
   width: 55px;
 }

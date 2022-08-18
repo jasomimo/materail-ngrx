@@ -5,8 +5,8 @@ import { User } from 'src/app/models/User';
 import {
   addNewUsers,
   retrieveUsers,
-  setFullUser,
-  retrieveFullUser,
+  addFullUser,
+  retrieveFullUserList,
   updateUserInList,
   updateAllList,
   setLoggedUser,
@@ -14,15 +14,8 @@ import {
 } from './user.actions';
 
 export const usersList: ReadonlyArray<DynamicFlatNode> = [];
-export const userDetail: Readonly<User> = {
-  login: '',
-  name: '',
-  avatar_url: '',
-  followers: 0,
-  public_repos: 0,
-  id: -1,
-};
-export const loggedUser: User = {
+export const fullUserDetails: ReadonlyArray<User> = [];
+export const loggedUser: Readonly<User> = {
   login: '',
   name: '',
   avatar_url: '',
@@ -40,7 +33,9 @@ export const usersReducer = createReducer(
   }),
   on(updateUserInList, (state, { user }) => {
     let users = [...state];
-    const arrayIndex = users.findIndex((oneUser) => oneUser.id === user.id);
+    const arrayIndex = users.findIndex(
+      (oneUser) => oneUser.user?.id === user.user?.id
+    );
     users[arrayIndex] = user;
     return [...users];
   }),
@@ -49,11 +44,11 @@ export const usersReducer = createReducer(
   })
 );
 export const oneUserReducer = createReducer(
-  userDetail,
-  on(retrieveFullUser, (state, { user }) => state),
+  fullUserDetails,
+  on(retrieveFullUserList, (state) => state),
 
-  on(setFullUser, (state, { user }) => {
-    return { ...user };
+  on(addFullUser, (state, { user }) => {
+    return [...state, user];
   })
 );
 

@@ -12,9 +12,13 @@ import { DynamicFlatNode } from '../models/DynamicFlatNode';
 export class GithubService {
   constructor(private https: HttpClient) {}
 
-  getUsers() {
+  getUsers(fromUserId: number) {
     const url = 'https://api.github.com/users';
-    return this.https.get<FullUser[]>(url);
+    return this.https.get<FullUser[]>(url, {
+      params: {
+        since: fromUserId,
+      },
+    });
   }
 
   login(token: string) {

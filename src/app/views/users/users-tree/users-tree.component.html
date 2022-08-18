@@ -1,0 +1,67 @@
+<section class="wrapper">
+  <div
+    class="dataToBLur wrapperContent"
+    [ngClass]="{ blurBackground: loading }"
+  >
+    <section class="treeWithButton">
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+          <button mat-icon-button disabled></button>
+          {{ node.repos.name }}
+        </mat-tree-node>
+        <mat-tree-node
+          *matTreeNodeDef="let node; when: hasChild"
+          matTreeNodePadding
+        >
+          <button
+            mat-icon-button
+            [attr.aria-label]="'Toggle ' + node.item"
+            matTreeNodeToggle
+          >
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{
+                treeControl.isExpanded(node) ? "expand_more" : "chevron_right"
+              }}
+            </mat-icon>
+          </button>
+          <mat-checkbox
+            *ngIf="this.selectedNode.user"
+            [checked]="this.selectedNode.user.id === node.user.id"
+            (change)="handleChange(node)"
+            class="checklist-leaf-node"
+            >{{ node.user.login }}</mat-checkbox
+          >
+
+          <section
+            class="userDetailWrapper"
+            *ngIf="this.selectedNode.user?.id === node.user.id"
+          >
+            <app-user-card
+              *ngIf="this.selectedUser"
+              [user]="this.selectedUser"
+            ></app-user-card>
+
+            <button
+              (click)="setUserInStore(node)"
+              class="buttonMargin"
+              mat-raised-button
+              [disabled]="loading"
+            >
+              Detail
+            </button>
+          </section>
+
+          <mat-progress-bar
+            *ngIf="node.isLoading"
+            mode="indeterminate"
+            class="example-tree-progress-bar"
+          ></mat-progress-bar>
+        </mat-tree-node>
+      </mat-tree>
+      <button mat-raised-button (click)="loadMoreUsers()">Load more</button>
+    </section>
+
+    <app-user-card [user]="loggedUser"></app-user-card>
+  </div>
+  <mat-spinner class="spinner" *ngIf="loading"></mat-spinner>
+</section>

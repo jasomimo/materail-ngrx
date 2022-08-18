@@ -1,0 +1,30 @@
+<section class="loginWrapper">
+  <mat-card [ngClass]="{ blurBackground: loading }">
+    <header class="logosWrapper">
+      <img class="logo" src="../../../../assets/angular.svg" />
+      <img class="logo" src="../../../../assets/ngrx.svg" />
+    </header>
+
+    <form [formGroup]="loginForm" class="loginForm">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Github personal token</mat-label>
+        <input formControlName="token" type="password" matInput />
+      </mat-form-field>
+      <section class="buttons">
+        <button
+          [disabled]="!loginForm.valid || loading"
+          (click)="login()"
+          mat-raised-button
+          type="submit"
+        >
+          Login
+        </button>
+        <button mat-raised-button routerLink="/users/list" [disabled]="loading">
+          Without login
+        </button>
+      </section>
+    </form>
+
+    <mat-spinner class="spinner" *ngIf="loading"></mat-spinner>
+  </mat-card>
+</section>

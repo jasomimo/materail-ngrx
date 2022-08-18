@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/User';
-import { selectOneUser } from 'src/app/store/users/user.selectors';
+import { selectFullUser } from 'src/app/store/users/user.selectors';
 
 @Component({
   selector: 'app-user-card',

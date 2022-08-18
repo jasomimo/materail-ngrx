@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { User } from '../models/User';
-import { setLoggedUser } from '../store/users/user.actions';
+import { User } from '../../models/User';
+import { setLoggedUser } from '../../store/users/user.actions';
 
 @Component({
   selector: 'app-header',

@@ -24,13 +24,13 @@ export const updateAllList = createAction(
 );
 
 //Detail
-export const retrieveFullUser = createAction(
-  '[One user] Retrieve user',
-  props<{ user: Readonly<User> }>()
+export const retrieveFullUserList = createAction(
+  '[Full user] Retrieve full user list',
+  props<{ users: Readonly<User> }>()
 );
 
-export const setFullUser = createAction(
-  '[One user] Set user',
+export const addFullUser = createAction(
+  '[Full user] Set user',
   props<{ user: User }>()
 );
 

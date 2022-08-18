@@ -82,10 +82,48 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       return;
     }
 
+    const nodes = this.data.map((name) => {
+      if (name.user?.id === node.user?.id) {
+        return new DynamicFlatNode(
+          name.level,
+          node.expandable,
+          true,
+          name.user,
+          undefined
+        );
+      } else {
+        return new DynamicFlatNode(
+          name.level,
+          node.expandable,
+          node.isLoading,
+          name.user,
+          undefined
+        );
+      }
+    });
+    let oneDynamicNode = this.data.find(
+      (oneD) => oneD.user?.id === node.user?.id
+    );
+
+    let newVariable: DynamicFlatNode;
+    if (oneDynamicNode) {
+      newVariable = Object.assign(JSON.parse(JSON.stringify(oneDynamicNode)));
+      newVariable.isLoading = true;
+      // this.store.dispatch(updateUserInList({ user: newVariable }));
+    }
+
+    // setTimeout(() => {
+    //   if (node.user) {
+    //     this.data.splice(node.user?.id - 1, 1);
+    //     this.data.splice(node.user?.id - 1, 0, newVariable);
+    //     this.dataChange.next(this.data);
+    //   }
+    // }, 500);
+
     let children: Repo[] = [];
-    if (node.repositories)
+    if (node.user?.repos_url)
       this._database
-        .getRepsitoriesOfUser(node.repositories)
+        .getRepsitoriesOfUser(node.user.repos_url)
         .subscribe((allRepos) => {
           children = allRepos;
 
@@ -94,18 +132,9 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
             return;
           }
 
-          let myNode = { ...node };
-          myNode.isLoading = true;
-          // this.store.dispatch(updateUserInList({ user: myNode }));
           const nodes = children.map(
             (name) =>
-              new DynamicFlatNode(
-                name.id,
-                name.name,
-                myNode.level + 1,
-                false,
-                false
-              )
+              new DynamicFlatNode(node.level + 1, false, false, undefined, name)
           );
 
           this.data.splice(index + 1, 0, ...nodes);

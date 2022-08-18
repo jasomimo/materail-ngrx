@@ -1,10 +1,13 @@
+import { FullUser } from './FullUser';
+import { Repo } from './Repo';
+import { User } from './User';
+
 export class DynamicFlatNode {
   constructor(
-    public id: number,
-    public login: string,
     public level: number = 1,
     public expandable: boolean = false,
     public isLoading: boolean = false,
-    public repositories?: string,
+    public user?: FullUser,
+    public repos?: Repo
   ) {}
 }

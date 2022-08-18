@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/User';
 import { GithubService } from 'src/app/services/github.service';
-import { setFullUser } from 'src/app/store/users/user.actions';
-import { selectOneUser } from 'src/app/store/users/user.selectors';
 import { RepoTableComponent } from './repo-table/repo-table.component';
 
 @Component({
@@ -27,7 +25,7 @@ export class UserDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((response) => {
-      this.user = response['newUser'];
+      this.user = response['userFromStore'];
       this.getUserRepos();
     });
   }
