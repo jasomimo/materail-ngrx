@@ -1,6 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/User';
 import { GithubService } from 'src/app/services/github.service';
 import { RepoTableComponent } from './repo-table/repo-table.component';
@@ -17,9 +16,7 @@ export class UserDetailComponent implements OnInit {
   user: User;
   repositories = [];
   constructor(
-    private store: Store,
     private githubService: GithubService,
-    private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -32,10 +29,11 @@ export class UserDetailComponent implements OnInit {
 
   getUserRepos() {
     if (this.user.repos_url)
-      this.githubService
-        .getRepsitoriesOfUser(this.user.repos_url)
-        ?.subscribe((allRepos) => {
+      this.githubService.getRepsitoriesOfUser(this.user.repos_url)?.subscribe(
+        (allRepos) => {
           this.tableComponent.setRepo(allRepos);
-        });
+        },
+        (err) => {}
+      );
   }
 }

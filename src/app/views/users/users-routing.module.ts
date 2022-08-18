@@ -11,12 +11,12 @@ const routes: Routes = [
     component: ViewComponent,
     children: [
       {
-        path: '', // child route path
-        component: UsersTreeComponent, // child route component that the router renders,
-        // data: {
-        //   reuseComponent: true,
-        //   key: 'list_comp',
-        // },
+        path: 'list',
+        component: UsersTreeComponent,
+        data: {
+          reuseComponent: true,
+          key: 'list_comp',
+        },
       },
       {
         path: ':login',

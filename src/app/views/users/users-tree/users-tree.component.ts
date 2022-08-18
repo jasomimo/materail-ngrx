@@ -1,25 +1,19 @@
 import {} from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, Injectable, OnInit } from '@angular/core';
-import { Route, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable, merge, map, take } from 'rxjs';
+import { take } from 'rxjs';
 import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
 import { User } from 'src/app/models/User';
 
 import { GithubService } from 'src/app/services/github.service';
-import {
-  addFullUser,
-  addNewUsers,
-  retrieveFullUserList,
-  setLoggedUser,
-} from 'src/app/store/users/user.actions';
+import { addFullUser, addNewUsers } from 'src/app/store/users/user.actions';
 import {
   selectFullUser,
   selectLoggedUser,
   selectUsers,
 } from 'src/app/store/users/user.selectors';
-import { FullUser } from '../../../models/FullUser';
 import { DynamicDataSource } from './dynamicDataSource';
 
 @Component({
@@ -42,11 +36,13 @@ export class UsersTreeComponent implements OnInit {
     level: -1,
     user: {
       email: '',
-      fulllName: '',
       id: -1,
       login: '',
-      profileImg: '',
       repos_url: '',
+      avatar_url: '',
+      followers: -1,
+      name: '',
+      public_repos: -1,
     },
   };
 
@@ -61,41 +57,40 @@ export class UsersTreeComponent implements OnInit {
     );
     this.dataSource = new DynamicDataSource(
       this.treeControl,
-      this.githubService,
-      store
+      this.githubService
     );
   }
 
   ngOnInit(): void {
-    let test = 0;
     this.store.select(selectUsers).subscribe((users) => {
-      if (test < 25) {
-        this.dataSource.data = [...users];
-        test++;
-      }
+      this.dataSource.data = [...users];
     });
 
-    this.store
-      .select(selectLoggedUser)
-      .pipe(take(1))
-      .subscribe((loggedUser) => {
-        if (loggedUser.id >= 0) {
-          this.loggedUser = loggedUser;
-        } else {
-          this.loggedUser = {
-            login: 'Unknown',
-            followers: -1,
-            avatar_url: 'https://avatars.githubusercontent.com/u/9919?s=40&v=4',
-            id: -1,
-            name: 'Unknown user',
-            public_repos: -1,
-          };
-        }
-      });
+    this.loadLoggedUser();
+    this.loadDataOnBeggining();
+  }
 
+  loadLoggedUser() {
+    this.store.select(selectLoggedUser).subscribe((loggedUser) => {
+      if (loggedUser.id >= 0) {
+        this.loggedUser = loggedUser;
+      } else {
+        this.loggedUser = {
+          login: 'Unknown',
+          followers: -1,
+          avatar_url: 'https://avatars.githubusercontent.com/u/9919?s=40&v=4',
+          id: -1,
+          name: 'Unknown user',
+          public_repos: -1,
+        };
+      }
+    });
+  }
+
+  loadDataOnBeggining() {
     if (this.dataSource.data.length === 0) {
       this.githubService.getUsers(0).subscribe((allUsers) => {
-        const myselect: DynamicFlatNode[] = allUsers.map((p: FullUser) => {
+        const myselect: DynamicFlatNode[] = allUsers.map((p: User) => {
           return {
             level: 1,
             expandable: true,
@@ -111,23 +106,32 @@ export class UsersTreeComponent implements OnInit {
   }
 
   loadMoreUsers() {
-    // const lastUserId = Math.max(...this.dataSource.data.map((o) => o.user.id));
-    // this.githubService
-    //   .getUsers(lastUserId)
-    //   .pipe(take(1))
-    //   .subscribe((allUsers) => {
-    //     const myselect: DynamicFlatNode[] = allUsers.map((p: FullUser) => {
-    //       return {
-    //         level: 1,
-    //         expandable: true,
-    //         isLoading: false,
-    //         user: p,
-    //       };
-    //     });
-    //     myselect.forEach((oneUser) => {
-    //       this.store.dispatch(addNewUsers({ users: oneUser }));
-    //     });
-    //   });
+    const lastUserId = Math.max(
+      ...this.dataSource.data.map((o) => {
+        if (o && o.user !== undefined) {
+          return o.user.id;
+        } else {
+          return 0;
+        }
+      })
+    );
+
+    this.githubService
+      .getUsers(lastUserId)
+      .pipe(take(1))
+      .subscribe((allUsers) => {
+        const myselect: DynamicFlatNode[] = allUsers.map((p: User) => {
+          return {
+            level: 1,
+            expandable: true,
+            isLoading: false,
+            user: p,
+          };
+        });
+        myselect.forEach((oneUser) => {
+          this.store.dispatch(addNewUsers({ users: oneUser }));
+        });
+      });
   }
 
   handleChange(node: DynamicFlatNode) {
@@ -137,11 +141,13 @@ export class UsersTreeComponent implements OnInit {
     ) {
       let user = {
         email: '',
-        fulllName: '',
         id: -1,
         login: '',
-        profileImg: '',
         repos_url: '',
+        avatar_url: '',
+        followers: -1,
+        name: '',
+        public_repos: -1,
       };
       this.selectedNode = { ...this.selectedNode, user };
       this.selectedUser = null;

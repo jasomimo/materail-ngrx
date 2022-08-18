@@ -4,16 +4,10 @@ import {
   SelectionChange,
 } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, merge, map } from 'rxjs';
 import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
 import { Repo } from 'src/app/models/Repo';
 import { GithubService } from 'src/app/services/github.service';
-import {
-  updateAllList,
-  updateUserInList,
-} from 'src/app/store/users/user.actions';
-import { selectUsers } from 'src/app/store/users/user.selectors';
 
 export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
@@ -28,8 +22,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
   constructor(
     private _treeControl: FlatTreeControl<DynamicFlatNode>,
-    private _database: GithubService,
-    private store: Store
+    private _database: GithubService
   ) {}
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
@@ -49,7 +42,6 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
   disconnect(collectionViewer: CollectionViewer): void {}
 
-  /** Handle expand/collapse behaviors */
   handleTreeControl(change: SelectionChange<DynamicFlatNode>) {
     if (change.added) {
       change.added.forEach((node) => this.toggleNode(node, true));
@@ -62,12 +54,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     }
   }
 
-  /**
-   * Toggle the node, remove from display list
-   */
   toggleNode(node: DynamicFlatNode, expand: boolean) {
-    // console.log(nodeInList)
-    // let node = {...nodeInList}
     const index = this.data.indexOf(node);
     if (!expand) {
       let count = 0;
@@ -82,44 +69,6 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       return;
     }
 
-    const nodes = this.data.map((name) => {
-      if (name.user?.id === node.user?.id) {
-        return new DynamicFlatNode(
-          name.level,
-          node.expandable,
-          true,
-          name.user,
-          undefined
-        );
-      } else {
-        return new DynamicFlatNode(
-          name.level,
-          node.expandable,
-          node.isLoading,
-          name.user,
-          undefined
-        );
-      }
-    });
-    let oneDynamicNode = this.data.find(
-      (oneD) => oneD.user?.id === node.user?.id
-    );
-
-    let newVariable: DynamicFlatNode;
-    if (oneDynamicNode) {
-      newVariable = Object.assign(JSON.parse(JSON.stringify(oneDynamicNode)));
-      newVariable.isLoading = true;
-      // this.store.dispatch(updateUserInList({ user: newVariable }));
-    }
-
-    // setTimeout(() => {
-    //   if (node.user) {
-    //     this.data.splice(node.user?.id - 1, 1);
-    //     this.data.splice(node.user?.id - 1, 0, newVariable);
-    //     this.dataChange.next(this.data);
-    //   }
-    // }, 500);
-
     let children: Repo[] = [];
     if (node.user?.repos_url)
       this._database
@@ -128,7 +77,6 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
           children = allRepos;
 
           if (!children || index < 0) {
-            // If no children, or cannot find the node, no op
             return;
           }
 
@@ -139,8 +87,6 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
 
           this.data.splice(index + 1, 0, ...nodes);
           this.dataChange.next(this.data);
-          // myNode.isLoading = false;
-          // this.store.dispatch(updateAllList({ user: this.data }));
         });
   }
 }

@@ -24,6 +24,7 @@ export const loggedUser: Readonly<User> = {
   id: -1,
 };
 
+// users list tree
 export const usersReducer = createReducer(
   usersList,
   on(retrieveUsers, (state, { users }) => users),
@@ -43,6 +44,8 @@ export const usersReducer = createReducer(
     return [...user];
   })
 );
+
+//users full details
 export const oneUserReducer = createReducer(
   fullUserDetails,
   on(retrieveFullUserList, (state) => state),
@@ -52,6 +55,7 @@ export const oneUserReducer = createReducer(
   })
 );
 
+//logged user
 export const loginReducer = createReducer(
   loggedUser,
   on(retrieveLoggedUser, (state) => state),

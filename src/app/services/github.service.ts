@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { User } from '../models/User';
-import { FullUser } from '../models/FullUser';
 import { Repo } from '../models/Repo';
-import { DynamicFlatNode } from '../models/DynamicFlatNode';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +11,7 @@ export class GithubService {
 
   getUsers(fromUserId: number) {
     const url = 'https://api.github.com/users';
-    return this.https.get<FullUser[]>(url, {
+    return this.https.get<User[]>(url, {
       params: {
         since: fromUserId,
       },

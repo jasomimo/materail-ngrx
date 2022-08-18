@@ -1,4 +1,3 @@
-import { FullUser } from './FullUser';
 import { Repo } from './Repo';
 import { User } from './User';
 
@@ -7,7 +6,7 @@ export class DynamicFlatNode {
     public level: number = 1,
     public expandable: boolean = false,
     public isLoading: boolean = false,
-    public user?: FullUser,
+    public user?: User,
     public repos?: Repo
   ) {}
 }

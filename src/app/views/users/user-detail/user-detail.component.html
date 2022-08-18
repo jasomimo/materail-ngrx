@@ -1,5 +1,5 @@
 <section class="userWrapper">
-  <i routerLink="/users" class="material-icons backIcon">arrow_back</i>
+  <i routerLink="/users/list" class="material-icons backIcon">arrow_back</i>
   <content *ngIf="this.user && this.user.id >= 0; else noData">
     <app-user-card [user]="this.user"></app-user-card>
     <app-repo-table></app-repo-table>

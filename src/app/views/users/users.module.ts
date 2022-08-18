@@ -9,8 +9,6 @@ import { RepoTableComponent } from './user-detail/repo-table/repo-table.componen
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../header/header.component';
 import { MaterialModule } from '../../material.module';
-import { RouteReuseStrategy } from '@angular/router';
-import { CustomRouteReuseStrategy } from 'src/app/strategy/custom-route-reuse.strategy';
 
 @NgModule({
   declarations: [

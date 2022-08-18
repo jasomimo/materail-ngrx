@@ -1,19 +1,32 @@
-import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort, Sort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import {
+  Component,
+  Input,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Repo } from 'src/app/models/Repo';
 import { User } from 'src/app/models/User';
 import { GithubService } from 'src/app/services/github.service';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-repo-table',
   templateUrl: './repo-table.component.html',
-  styleUrls: ['./repo-table.component.css']
+  styleUrls: ['./repo-table.component.css'],
 })
-export class RepoTableComponent {
-  displayedColumns: string[] = ['name', 'description', 'stargazers_count', 'watchers', 'created_at', 'updated_at'];
+export class RepoTableComponent implements OnInit {
+  displayedColumns: string[] = [
+    'name',
+    'description',
+    'stargazers_count',
+    'watchers',
+    'created_at',
+    'updated_at',
+  ];
   dataSource: MatTableDataSource<Repo>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -22,18 +35,27 @@ export class RepoTableComponent {
 
   repositories: Repo[] = [];
 
-  constructor(private githubService: GithubService, private _liveAnnouncer: LiveAnnouncer) {
-    this.dataSource = new MatTableDataSource(this.repositories);
-   }
+  loading = false;
 
-  setRepo(repos: Repo[]){
-    this.repositories = [...repos];
+  constructor(
+    private githubService: GithubService,
+    private _liveAnnouncer: LiveAnnouncer
+  ) {
     this.dataSource = new MatTableDataSource(this.repositories);
-    this.dataSource.paginator = this.paginator
-    this.dataSource.sort = this.sort;
+  }
+  ngOnInit(): void {
+    this.loading = true;
   }
 
-  sortData(sort: Sort){
+  setRepo(repos: Repo[]) {
+    this.repositories = [...repos];
+    this.dataSource = new MatTableDataSource(this.repositories);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.loading = false;
+  }
+
+  sortData(sort: Sort) {
     const data = this.repositories.slice();
     if (!sort.active || sort.direction === '') {
       this.repositories = data;
@@ -46,15 +68,27 @@ export class RepoTableComponent {
         case 'name':
           return this.compare(a.name, b.name, isAsc);
         case 'description':
-          return this.compare(a.description.charAt(0), b.description.charAt(0), isAsc);
+          return this.compare(
+            a.description.charAt(0),
+            b.description.charAt(0),
+            isAsc
+          );
         case 'stars':
           return this.compare(a.stargazers_count, b.stargazers_count, isAsc);
         case 'watchers':
           return this.compare(a.watchers, b.watchers, isAsc);
         case 'created':
-          return this.compare(new Date(a.created_at).getTime(), new Date(b.created_at).getTime(), isAsc);
+          return this.compare(
+            new Date(a.created_at).getTime(),
+            new Date(b.created_at).getTime(),
+            isAsc
+          );
         case 'updated':
-          return this.compare(new Date(a.updated_at).getTime(), new Date(b.updated_at).getTime(), isAsc);
+          return this.compare(
+            new Date(a.updated_at).getTime(),
+            new Date(b.updated_at).getTime(),
+            isAsc
+          );
         default:
           return 0;
       }
@@ -65,20 +99,11 @@ export class RepoTableComponent {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
-
 }
-
-
-
