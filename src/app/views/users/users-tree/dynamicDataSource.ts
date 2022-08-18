@@ -68,7 +68,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       this.dataChange.next(this.data);
       return;
     }
-
+    node.isLoading = true;
     let children: Repo[] = [];
     if (node.user?.repos_url)
       this._database
@@ -84,7 +84,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
             (name) =>
               new DynamicFlatNode(node.level + 1, false, false, undefined, name)
           );
-
+          node.isLoading = false;
           this.data.splice(index + 1, 0, ...nodes);
           this.dataChange.next(this.data);
         });

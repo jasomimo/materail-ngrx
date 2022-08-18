@@ -12,6 +12,10 @@
   margin-top: 20px;
 }
 
+mat-tree{
+  width: 100%;
+}
+
 mat-tree-node{
   padding: 0;
 }
@@ -33,6 +37,9 @@ mat-tree-node{
   align-items: center;
   margin-bottom: 20px;
   gap: 10px;
+  align-items: baseline;
+  flex: 1;
+  margin-right: 5px;
 }
 
 .userDetailWrapper{

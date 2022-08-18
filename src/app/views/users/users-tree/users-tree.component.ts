@@ -63,7 +63,7 @@ export class UsersTreeComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.select(selectUsers).subscribe((users) => {
-      this.dataSource.data = [...users];
+      this.dataSource.data = JSON.parse(JSON.stringify(users));
     });
 
     this.loadLoggedUser();
