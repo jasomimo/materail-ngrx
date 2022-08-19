@@ -6,15 +6,17 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
-import {
-  loginReducer,
-  oneUserReducer,
-  usersReducer,
-} from './store/users/user.reducer';
+import { usersReducer } from './store/users/user.reducer';
+import { oneUserReducer } from './store/fullUser/users/usersList.reducer';
+import { loginReducer } from './store/loggedUser/users/loggedUser.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffect } from './store/users/user.effects';
+import { UserListEffect } from './store/fullUser/users/usersList.effects';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './strategy/custom-route-reuse.strategy';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment';
+import { LoggedUserEffect } from './store/loggedUser/users/loggedUser.effects';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,7 +33,11 @@ import { CustomRouteReuseStrategy } from './strategy/custom-route-reuse.strategy
       },
       {}
     ),
-    EffectsModule.forRoot([UserEffect]),
+    EffectsModule.forRoot([UserEffect, UserListEffect, LoggedUserEffect]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production, // Restrict extension to log-only mode
+    }),
   ],
   bootstrap: [AppComponent],
   providers: [

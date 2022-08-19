@@ -3,6 +3,8 @@
     class="dataToBLur wrapperContent"
     [ngClass]="{ blurBackground: loading }"
   >
+    <mat-spinner class="spinner" *ngIf="isLoading$ | async"></mat-spinner>
+
     <section class="treeWithButton">
       <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
         <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>

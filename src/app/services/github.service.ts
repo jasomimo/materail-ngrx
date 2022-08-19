@@ -31,6 +31,7 @@ export class GithubService {
     return this.https.get<Repo[]>(url);
   }
   getFullUser(login: string) {
+    console.log('fo linda');
     const url = 'https://api.github.com/users/' + login;
     return this.https.get<User>(url);
   }

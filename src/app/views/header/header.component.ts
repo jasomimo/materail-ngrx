@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { setLoggedUserSuccess } from 'src/app/store/loggedUser/users/loggedUser.actions';
 import { User } from '../../models/User';
-import { setLoggedUser } from '../../store/users/user.actions';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +22,6 @@ export class HeaderComponent implements OnInit {
       public_repos: 0,
       id: -1,
     };
-    this.store.dispatch(setLoggedUser({ user: loggedUser }));
+    this.store.dispatch(setLoggedUserSuccess({ user: loggedUser }));
   }
 }

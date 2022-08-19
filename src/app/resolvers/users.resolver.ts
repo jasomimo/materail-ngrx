@@ -5,11 +5,11 @@ import {
   ActivatedRouteSnapshot,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { catchError, Observable, of, map, switchMap } from 'rxjs';
+import { catchError, Observable, of, map } from 'rxjs';
 import { User } from '../models/User';
 import { GithubService } from '../services/github.service';
-import { addFullUser } from '../store/users/user.actions';
-import { selectFullUser } from '../store/users/user.selectors';
+import { addFullUserSuccess } from '../store/fullUser/users/usersList.actions';
+import { getUserSelector } from '../store/fullUser/users/usersList.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -29,11 +29,8 @@ export class UsersResolver implements Resolve<User | boolean> {
     }
   }
   getUserStore(route: ActivatedRouteSnapshot): Observable<User | boolean> {
-    return this.store.select(selectFullUser).pipe(
-      map((users) => {
-        const myUser = users.find(
-          (oneUser) => oneUser.login === route.params['login']
-        );
+    return this.store.select(getUserSelector(route.params['login'])).pipe(
+      map((myUser) => {
         if (myUser) {
           return myUser;
         } else {
@@ -48,7 +45,7 @@ export class UsersResolver implements Resolve<User | boolean> {
   getUserApi(route: ActivatedRouteSnapshot): Observable<User | boolean> {
     return this.githubService.getFullUser(route.params['login']).pipe(
       map((user) => {
-        this.store.dispatch(addFullUser({ user: user }));
+        this.store.dispatch(addFullUserSuccess({ user: user }));
         return user;
       }),
       catchError((error) => {

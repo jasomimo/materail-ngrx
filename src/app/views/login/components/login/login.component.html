@@ -1,5 +1,5 @@
 <section class="loginWrapper">
-  <mat-card [ngClass]="{ blurBackground: loading }">
+  <mat-card [ngClass]="{ blurBackground: isLoading$ | async }">
     <header class="logosWrapper">
       <img class="logo" src="../../../../assets/angular.svg" />
       <img class="logo" src="../../../../assets/ngrx.svg" />
@@ -12,19 +12,24 @@
       </mat-form-field>
       <section class="buttons">
         <button
-          [disabled]="!loginForm.valid || loading"
+          [disabled]="!loginForm.valid || (isLoading$ | async)"
           (click)="login()"
           mat-raised-button
           type="submit"
         >
           Login
         </button>
-        <button mat-raised-button routerLink="/users/list" [disabled]="loading">
+        <button
+          mat-raised-button
+          routerLink="/users/list"
+          [disabled]="isLoading$ | async"
+          (click)="setUser()"
+        >
           Without login
         </button>
       </section>
     </form>
 
-    <mat-spinner class="spinner" *ngIf="loading"></mat-spinner>
+    <mat-spinner class="spinner" *ngIf="isLoading$ | async"></mat-spinner>
   </mat-card>
 </section>

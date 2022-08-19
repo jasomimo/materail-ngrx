@@ -1,0 +1,23 @@
+import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
+import { User } from 'src/app/models/User';
+import { UsersStateInterface } from 'src/app/models/stateModels/UsersStateInterface';
+import { LoggedUserStateInterface } from 'src/app/models/stateModels/LoggedUserStateInterface';
+
+export const selectLoggedUser =
+  createFeatureSelector<LoggedUserStateInterface>('loggedUser');
+
+export const loggedUserIsLoadingSelector = createSelector(
+  selectLoggedUser,
+  (state) => state.isLoading
+);
+
+export const loggedUsersSelector = createSelector(
+  selectLoggedUser,
+  (state) => state
+);
+
+export const loggedUsererrorSelector = createSelector(
+  selectLoggedUser,
+  (state) => state.error
+);

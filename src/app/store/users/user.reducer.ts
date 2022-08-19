@@ -1,19 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
-import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
 import { User } from 'src/app/models/User';
+import { UsersStateInterface } from 'src/app/models/stateModels/UsersStateInterface';
 
 import {
-  addNewUsers,
+  addNewUsersSuccess,
   retrieveUsers,
-  addFullUser,
-  retrieveFullUserList,
-  updateUserInList,
-  updateAllList,
-  setLoggedUser,
-  retrieveLoggedUser,
+  addNewUsersError,
 } from './user.actions';
 
-export const usersList: ReadonlyArray<DynamicFlatNode> = [];
+export const usersList: Readonly<UsersStateInterface> = {
+  isLoading: false,
+  error: '',
+  users: [],
+};
 export const fullUserDetails: ReadonlyArray<User> = [];
 export const loggedUser: Readonly<User> = {
   login: '',
@@ -27,39 +26,17 @@ export const loggedUser: Readonly<User> = {
 // users list tree
 export const usersReducer = createReducer(
   usersList,
-  on(retrieveUsers, (state, { users }) => users),
+  on(retrieveUsers, (state) => ({ ...state, isLoading: true })),
 
-  on(addNewUsers, (state, { users }) => {
-    return [...state, users];
-  }),
-  on(updateUserInList, (state, { user }) => {
-    let users = [...state];
-    const arrayIndex = users.findIndex(
-      (oneUser) => oneUser.user?.id === user.user?.id
-    );
-    users[arrayIndex] = user;
-    return [...users];
-  }),
-  on(updateAllList, (state, { user }) => {
-    return [...user];
-  })
-);
+  on(addNewUsersSuccess, (state, action) => ({
+    ...state,
+    isLoading: false,
+    users: state.users.concat(action.users),
+  })),
 
-//users full details
-export const oneUserReducer = createReducer(
-  fullUserDetails,
-  on(retrieveFullUserList, (state) => state),
-
-  on(addFullUser, (state, { user }) => {
-    return [...state, user];
-  })
-);
-
-//logged user
-export const loginReducer = createReducer(
-  loggedUser,
-  on(retrieveLoggedUser, (state) => state),
-  on(setLoggedUser, (state, { user }) => {
-    return { ...user };
-  })
+  on(addNewUsersError, (state, action) => ({
+    ...state,
+    isLoading: false,
+    error: action.error,
+  }))
 );
