@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { GithubService } from 'src/app/services/github.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
 import {
   retrieveLoggedUser,
   setLoggedUserSuccess,
 } from 'src/app/store/loggedUser/users/loggedUser.actions';
-import { catchError, Observable, Subscription, take } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import {
   loggedUsersSelector,
   loggedUserIsLoadingSelector,
@@ -32,7 +31,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   errorMessage$: Subscription;
 
   constructor(
-    private githubService: GithubService,
     private router: Router,
     private _snackBar: MatSnackBar,
     private store: Store<{}>

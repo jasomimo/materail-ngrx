@@ -1,15 +1,8 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Repo } from 'src/app/models/Repo';
-import { User } from 'src/app/models/User';
 import { GithubService } from 'src/app/services/github.service';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
@@ -37,10 +30,7 @@ export class RepoTableComponent implements OnInit {
 
   loading = false;
 
-  constructor(
-    private githubService: GithubService,
-    private _liveAnnouncer: LiveAnnouncer
-  ) {
+  constructor(private _liveAnnouncer: LiveAnnouncer) {
     this.dataSource = new MatTableDataSource(this.repositories);
   }
   ngOnInit(): void {
