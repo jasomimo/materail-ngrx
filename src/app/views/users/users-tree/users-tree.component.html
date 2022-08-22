@@ -60,7 +60,9 @@
           ></mat-progress-bar>
         </mat-tree-node>
       </mat-tree>
-      <button mat-raised-button (click)="loadMoreUsers()">Load more</button>
+      <button class="buttonMargin" mat-raised-button (click)="loadMoreUsers()">
+        Load more
+      </button>
     </section>
 
     <app-user-card [user]="loggedUser"></app-user-card>

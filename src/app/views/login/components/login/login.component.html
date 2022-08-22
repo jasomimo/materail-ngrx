@@ -10,7 +10,7 @@
         <mat-label>Github personal token</mat-label>
         <input formControlName="token" type="password" matInput />
       </mat-form-field>
-      <section class="buttons">
+      <section class="buttonWrapper">
         <button
           [disabled]="!loginForm.valid || (isLoading$ | async)"
           (click)="login()"
@@ -19,17 +19,16 @@
         >
           Login
         </button>
-        <button
-          mat-raised-button
-          routerLink="/users/list"
-          [disabled]="isLoading$ | async"
-          (click)="setUser()"
-        >
-          Without login
-        </button>
       </section>
     </form>
-
+    <button
+      mat-raised-button
+      routerLink="/users/list"
+      [disabled]="isLoading$ | async"
+      (click)="setUser()"
+    >
+      Without login
+    </button>
     <mat-spinner class="spinner" *ngIf="isLoading$ | async"></mat-spinner>
   </mat-card>
 </section>
