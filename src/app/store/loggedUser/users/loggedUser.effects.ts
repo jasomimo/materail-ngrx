@@ -23,7 +23,10 @@ export class LoggedUserEffect {
       ofType(retrieveLoggedUser),
       mergeMap((action) => {
         return this.githubService.login(action.loginToken).pipe(
-          map((user) => setLoggedUserSuccess({ user: user })),
+          map((user) => {
+            user.token = action.loginToken;
+            return setLoggedUserSuccess({ user: user });
+          }),
           catchError((error) => {
             this.openSnackBar(error.error.message, 'Ok');
             return of(setLoggedUserFailed({ error: error.error.message }));

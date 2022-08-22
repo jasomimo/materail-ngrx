@@ -8,4 +8,5 @@ export interface User {
   repos_url?: string;
   type?: boolean;
   email?: string;
+  token?: string;
 }

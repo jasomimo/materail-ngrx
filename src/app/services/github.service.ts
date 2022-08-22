@@ -9,12 +9,22 @@ import { Repo } from '../models/Repo';
 export class GithubService {
   constructor(private https: HttpClient) {}
 
-  getUsers(fromUserId: number) {
+  getUsers(fromUserId: number, authToken?: string) {
+    let requestOptions = null;
+    if (authToken) {
+      requestOptions = {
+        headers: new HttpHeaders({
+          Authorization: 'token ' + authToken,
+        }),
+      };
+    }
+
     const url = 'https://api.github.com/users';
     return this.https.get<User[]>(url, {
       params: {
         since: fromUserId,
       },
+      headers: requestOptions?.headers,
     });
   }
 

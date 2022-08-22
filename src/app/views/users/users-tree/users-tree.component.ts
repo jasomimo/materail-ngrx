@@ -78,7 +78,9 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(retrieveUsers({ fromUserId: 0 }));
+    this.store.dispatch(
+      retrieveUsers({ fromUserId: 0, authToken: this.loggedUser?.token })
+    );
     this.dataToTree$ = this.store
       .pipe(select(usersSelector))
       .subscribe((users) => {
@@ -91,10 +93,6 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.dataToTree$.unsubscribe();
     this.loggedUser$.unsubscribe();
-  }
-
-  jsonStr(obj: any) {
-    return JSON.stringify(obj);
   }
 
   openSnackBar(message: string, action: string) {

@@ -15,7 +15,7 @@ export const addNewUsersError = createAction(
 
 export const retrieveUsers = createAction(
   '[User list] Retrieve users',
-  props<{ fromUserId: number }>()
+  props<{ fromUserId: number; authToken?: string }>()
 );
 
 export const updateUserInList = createAction(

@@ -24,15 +24,17 @@ export class UserEffect {
     this.actions$.pipe(
       ofType(retrieveUsers),
       mergeMap((action) => {
-        return this.githubService.getUsers(action.fromUserId).pipe(
-          map((users) =>
-            addNewUsersSuccess({ users: this.mapUsersToDynamicNode(users) })
-          ),
-          catchError((error) => {
-            this.openSnackBar(error.error.message, 'Ok');
-            return of(addNewUsersError({ error: error }));
-          })
-        );
+        return this.githubService
+          .getUsers(action.fromUserId, action.authToken)
+          .pipe(
+            map((users) =>
+              addNewUsersSuccess({ users: this.mapUsersToDynamicNode(users) })
+            ),
+            catchError((error) => {
+              this.openSnackBar(error.error.message, 'Ok');
+              return of(addNewUsersError({ error: error }));
+            })
+          );
       })
     )
   );
