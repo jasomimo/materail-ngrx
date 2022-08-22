@@ -8,12 +8,14 @@ import {
   setLoggedUserSuccess,
   retrieveLoggedUser,
 } from './loggedUser.actions';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class LoggedUserEffect {
   constructor(
     private actions$: Actions,
-    private githubService: GithubService
+    private githubService: GithubService,
+    private _snackBar: MatSnackBar
   ) {}
 
   getUser$ = createEffect(() =>
@@ -22,11 +24,17 @@ export class LoggedUserEffect {
       mergeMap((action) => {
         return this.githubService.login(action.loginToken).pipe(
           map((user) => setLoggedUserSuccess({ user: user })),
-          catchError((error) =>
-            of(setLoggedUserFailed({ error: error.error.message }))
-          )
+          catchError((error) => {
+            this.openSnackBar(error.error.message, 'Ok');
+            return of(setLoggedUserFailed({ error: error.error.message }));
+          })
         );
       })
     )
   );
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 6000,
+    });
+  }
 }

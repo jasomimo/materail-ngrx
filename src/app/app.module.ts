@@ -17,6 +17,7 @@ import { CustomRouteReuseStrategy } from './strategy/custom-route-reuse.strategy
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { LoggedUserEffect } from './store/loggedUser/users/loggedUser.effects';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,10 +39,12 @@ import { LoggedUserEffect } from './store/loggedUser/users/loggedUser.effects';
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
+    MatSnackBarModule,
   ],
   bootstrap: [AppComponent],
   providers: [
     { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
+    MatSnackBarModule,
   ],
 })
 export class AppModule {}

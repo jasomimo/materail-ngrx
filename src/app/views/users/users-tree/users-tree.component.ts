@@ -19,8 +19,10 @@ import { retrieveUsers } from 'src/app/store/users/user.actions';
 import {
   usersSelector,
   isLoadingSelector,
+  errorSelector,
 } from 'src/app/store/users/user.selectors';
 import { DynamicDataSource } from './dynamicDataSource';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-users-tree',
@@ -53,13 +55,15 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   };
 
   isLoading$: Observable<boolean>;
+  errorMessage$: Observable<string>;
   dataToTree$: Subscription;
   loggedUser$: Subscription;
 
   constructor(
     private githubService: GithubService,
     private store: Store<UsersStateInterface>,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(
       this.getLevel,
@@ -70,6 +74,7 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
       this.githubService
     );
     this.isLoading$ = this.store.pipe(select(isLoadingSelector));
+    this.errorMessage$ = this.store.select(errorSelector);
   }
 
   ngOnInit(): void {
@@ -86,6 +91,16 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.dataToTree$.unsubscribe();
     this.loggedUser$.unsubscribe();
+  }
+
+  jsonStr(obj: any) {
+    return JSON.stringify(obj);
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 3000,
+    });
   }
 
   loadLoggedUser() {

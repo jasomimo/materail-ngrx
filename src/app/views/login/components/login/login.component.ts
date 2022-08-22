@@ -46,20 +46,10 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.router.navigate(['/users/list']);
         }
       });
-
-    this.errorMessage$ = this.store
-      .pipe(select(loggedUsererrorSelector))
-      .subscribe((state) => {
-        if (!this.firstOpen && state !== '') {
-          this.openSnackBar(state, 'Ok');
-        }
-        this.firstOpen = false;
-      });
   }
 
   ngOnDestroy(): void {
     this.loggedUser$.unsubscribe();
-    this.errorMessage$.unsubscribe();
   }
 
   login() {

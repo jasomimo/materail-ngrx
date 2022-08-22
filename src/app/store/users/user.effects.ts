@@ -10,11 +10,13 @@ import {
 } from '../users/user.actions';
 import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
 import { User } from 'src/app/models/User';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class UserEffect {
   constructor(
     private actions$: Actions,
+    private _snackBar: MatSnackBar,
     private githubService: GithubService
   ) {}
 
@@ -26,7 +28,10 @@ export class UserEffect {
           map((users) =>
             addNewUsersSuccess({ users: this.mapUsersToDynamicNode(users) })
           ),
-          catchError((error) => of(addNewUsersError({ error: error.message })))
+          catchError((error) => {
+            this.openSnackBar(error.error.message, 'Ok');
+            return of(addNewUsersError({ error: error }));
+          })
         );
       })
     )
@@ -41,5 +46,11 @@ export class UserEffect {
       };
     });
     return myselect;
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 6000,
+    });
   }
 }
