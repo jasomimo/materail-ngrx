@@ -23,7 +23,7 @@ export class LoggedUserEffect {
         return this.githubService.login(action.loginToken).pipe(
           map((user) => setLoggedUserSuccess({ user: user })),
           catchError((error) =>
-            of(setLoggedUserFailed({ error: error.message }))
+            of(setLoggedUserFailed({ error: error.error.message }))
           )
         );
       })
