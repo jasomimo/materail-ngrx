@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GithubService } from 'src/app/services/github.service';
@@ -8,7 +8,7 @@ import {
   retrieveLoggedUser,
   setLoggedUserSuccess,
 } from 'src/app/store/loggedUser/users/loggedUser.actions';
-import { catchError, Observable, take } from 'rxjs';
+import { catchError, Observable, Subscription, take } from 'rxjs';
 import {
   loggedUsersSelector,
   loggedUserIsLoadingSelector,
@@ -20,13 +20,17 @@ import {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm = new FormGroup({
     token: new FormControl('', Validators.required),
   });
 
   isLoading$: Observable<boolean>;
   firstOpen = true;
+
+  loggedUser$: Subscription;
+  errorMessage$: Subscription;
+
   constructor(
     private githubService: GithubService,
     private router: Router,
@@ -35,19 +39,29 @@ export class LoginComponent implements OnInit {
   ) {
     this.isLoading$ = this.store.pipe(select(loggedUserIsLoadingSelector));
   }
-  ngOnInit(): void {
-    this.store.pipe(select(loggedUsersSelector)).subscribe((state) => {
-      if (state.user.id !== -1) {
-        this.router.navigate(['/users/list']);
-      }
-    });
 
-    this.store.pipe(select(loggedUsererrorSelector)).subscribe((state) => {
-      if (!this.firstOpen && state !== '') {
-        this.openSnackBar(state, 'Ok');
-      }
-      this.firstOpen = false;
-    });
+  ngOnInit(): void {
+    this.loggedUser$ = this.store
+      .pipe(select(loggedUsersSelector))
+      .subscribe((state) => {
+        if (state.user.id !== -1) {
+          this.router.navigate(['/users/list']);
+        }
+      });
+
+    this.errorMessage$ = this.store
+      .pipe(select(loggedUsererrorSelector))
+      .subscribe((state) => {
+        if (!this.firstOpen && state !== '') {
+          this.openSnackBar(state, 'Ok');
+        }
+        this.firstOpen = false;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.loggedUser$.unsubscribe();
+    this.errorMessage$.unsubscribe();
   }
 
   login() {

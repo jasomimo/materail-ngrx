@@ -1,9 +1,9 @@
 import {} from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
 import { User } from 'src/app/models/User';
 import { UsersStateInterface } from 'src/app/models/stateModels/UsersStateInterface';
@@ -27,7 +27,7 @@ import { DynamicDataSource } from './dynamicDataSource';
   templateUrl: './users-tree.component.html',
   styleUrls: ['./users-tree.component.scss'],
 })
-export class UsersTreeComponent implements OnInit {
+export class UsersTreeComponent implements OnInit, OnDestroy {
   loggedUser: User;
 
   treeControl: FlatTreeControl<DynamicFlatNode>;
@@ -53,6 +53,8 @@ export class UsersTreeComponent implements OnInit {
   };
 
   isLoading$: Observable<boolean>;
+  dataToTree$: Subscription;
+  loggedUser$: Subscription;
 
   constructor(
     private githubService: GithubService,
@@ -72,17 +74,26 @@ export class UsersTreeComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(retrieveUsers({ fromUserId: 0 }));
-    this.store.pipe(select(usersSelector)).subscribe((users) => {
-      this.dataSource.data = JSON.parse(JSON.stringify(users));
-    });
+    this.dataToTree$ = this.store
+      .pipe(select(usersSelector))
+      .subscribe((users) => {
+        this.dataSource.data = JSON.parse(JSON.stringify(users));
+      });
 
     this.loadLoggedUser();
   }
 
+  ngOnDestroy(): void {
+    this.dataToTree$.unsubscribe();
+    this.loggedUser$.unsubscribe();
+  }
+
   loadLoggedUser() {
-    this.store.select(loggedUsersSelector).subscribe((state) => {
-      this.loggedUser = state.user;
-    });
+    this.loggedUser$ = this.store
+      .select(loggedUsersSelector)
+      .subscribe((state) => {
+        this.loggedUser = state.user;
+      });
   }
 
   loadMoreUsers() {
