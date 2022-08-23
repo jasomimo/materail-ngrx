@@ -1,11 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 
+import { LoggedUserStateInterface } from 'src/app/models/stateModels/LoggedUserStateInterface';
 import {
   retrieveLoggedUser,
-  setLoggedUserSuccess,
   setLoggedUserFailed,
+  setLoggedUserSuccess,
 } from './loggedUser.actions';
-import { LoggedUserStateInterface } from 'src/app/models/stateModels/LoggedUserStateInterface';
 
 export const loggedUser: Readonly<LoggedUserStateInterface> = {
   isLoading: false,

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { GithubService } from 'src/app/services/github.service';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
-import { EMPTY, of } from 'rxjs';
-import { Actions, createEffect, Effect, ofType } from '@ngrx/effects';
 
 import {
+  addFullUserFailed,
   addFullUserSuccess,
   retrieveFullUser,
-  addFullUserFailed,
 } from './usersList.actions';
 
 @Injectable()

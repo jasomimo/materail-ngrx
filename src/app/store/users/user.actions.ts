@@ -1,7 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
-import { User } from 'src/app/models/User';
-import { UsersStateInterface } from 'src/app/models/stateModels/UsersStateInterface';
 
 export const addNewUsersSuccess = createAction(
   '[Full user] Add new userssuccess',

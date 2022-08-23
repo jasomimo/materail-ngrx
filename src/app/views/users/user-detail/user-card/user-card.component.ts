@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, Input } from '@angular/core';
 import { User } from 'src/app/models/User';
 
 @Component({

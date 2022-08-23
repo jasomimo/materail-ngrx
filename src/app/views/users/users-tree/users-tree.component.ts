@@ -5,24 +5,21 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
-import { User } from 'src/app/models/User';
 import { UsersStateInterface } from 'src/app/models/stateModels/UsersStateInterface';
+import { User } from 'src/app/models/User';
 
 import { GithubService } from 'src/app/services/github.service';
+import { SnackBarService } from 'src/app/services/snack-bar.service';
 import { retrieveFullUser } from 'src/app/store/fullUser/users/usersList.actions';
 import { getUserSelector } from 'src/app/store/fullUser/users/usersList.selectors';
-import {
-  loggedUsersSelector,
-  selectLoggedUser,
-} from 'src/app/store/loggedUser/users/loggedUser.selectors';
+import { loggedUsersSelector } from 'src/app/store/loggedUser/users/loggedUser.selectors';
 import { retrieveUsers } from 'src/app/store/users/user.actions';
 import {
-  usersSelector,
-  isLoadingSelector,
   errorSelector,
+  isLoadingSelector,
+  usersSelector,
 } from 'src/app/store/users/user.selectors';
 import { DynamicDataSource } from './dynamicDataSource';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-users-tree',
@@ -63,7 +60,7 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
     private githubService: GithubService,
     private store: Store<UsersStateInterface>,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private snackBarService: SnackBarService
   ) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(
       this.getLevel,
@@ -93,12 +90,6 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.dataToTree$.unsubscribe();
     this.loggedUser$.unsubscribe();
-  }
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 3000,
-    });
   }
 
   loadLoggedUser() {

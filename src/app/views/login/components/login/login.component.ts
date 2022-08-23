@@ -1,17 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { select, Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 import {
   retrieveLoggedUser,
   setLoggedUserSuccess,
 } from 'src/app/store/loggedUser/users/loggedUser.actions';
-import { Observable, Subscription } from 'rxjs';
 import {
-  loggedUsersSelector,
   loggedUserIsLoadingSelector,
-  loggedUsererrorSelector,
+  loggedUsersSelector,
 } from '../../../../store/loggedUser/users/loggedUser.selectors';
 
 @Component({
@@ -30,11 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   loggedUser$: Subscription;
   errorMessage$: Subscription;
 
-  constructor(
-    private router: Router,
-    private _snackBar: MatSnackBar,
-    private store: Store<{}>
-  ) {
+  constructor(private router: Router, private store: Store<{}>) {
     this.isLoading$ = this.store.pipe(select(loggedUserIsLoadingSelector));
   }
 
@@ -55,12 +49,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   login() {
     const token = this.loginForm.controls['token'].value;
     if (token) this.store.dispatch(retrieveLoggedUser({ loginToken: token }));
-  }
-
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 3000,
-    });
   }
 
   setUser() {

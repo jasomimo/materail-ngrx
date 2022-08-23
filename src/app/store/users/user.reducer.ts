@@ -1,11 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
-import { User } from 'src/app/models/User';
 import { UsersStateInterface } from 'src/app/models/stateModels/UsersStateInterface';
+import { User } from 'src/app/models/User';
 
 import {
+  addNewUsersError,
   addNewUsersSuccess,
   retrieveUsers,
-  addNewUsersError,
 } from './user.actions';
 
 export const usersList: Readonly<UsersStateInterface> = {

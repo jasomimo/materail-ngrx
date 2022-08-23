@@ -1,7 +1,4 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
-import { User } from 'src/app/models/User';
-import { UsersStateInterface } from 'src/app/models/stateModels/UsersStateInterface';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FullUserStateInterface } from 'src/app/models/stateModels/FullUserStateInterface';
 
 export const selectFullUser =

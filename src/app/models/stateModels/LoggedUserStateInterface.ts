@@ -1,4 +1,3 @@
-import { DynamicFlatNode } from '../DynamicFlatNode';
 import { User } from '../User';
 
 export interface LoggedUserStateInterface {

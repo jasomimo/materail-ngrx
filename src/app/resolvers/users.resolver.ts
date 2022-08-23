@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
+  ActivatedRouteSnapshot,
   Resolve,
   RouterStateSnapshot,
-  ActivatedRouteSnapshot,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { catchError, Observable, of, map } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { User } from '../models/User';
 import { GithubService } from '../services/github.service';
 import { addFullUserSuccess } from '../store/fullUser/users/usersList.actions';

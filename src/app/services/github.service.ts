@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { User } from '../models/User';
+import { Injectable } from '@angular/core';
 import { Repo } from '../models/Repo';
+import { User } from '../models/User';
 
 @Injectable({
   providedIn: 'root',
@@ -9,22 +9,14 @@ import { Repo } from '../models/Repo';
 export class GithubService {
   constructor(private https: HttpClient) {}
 
-  getUsers(fromUserId: number, authToken?: string) {
-    let requestOptions = null;
-    if (authToken) {
-      requestOptions = {
-        headers: new HttpHeaders({
-          Authorization: 'token ' + authToken,
-        }),
-      };
-    }
+  baseUrl = 'https://api.github.com/';
 
-    const url = 'https://api.github.com/users';
+  getUsers(fromUserId: number) {
+    const url = this.baseUrl + 'users';
     return this.https.get<User[]>(url, {
       params: {
         since: fromUserId,
       },
-      headers: requestOptions?.headers,
     });
   }
 
@@ -34,14 +26,14 @@ export class GithubService {
         Authorization: 'token ' + token,
       }),
     };
-    const url = 'https://api.github.com/user';
+    const url = this.baseUrl + 'user';
     return this.https.get<User>(url, requestOptions);
   }
   getRepsitoriesOfUser(url: string) {
     return this.https.get<Repo[]>(url);
   }
   getFullUser(login: string) {
-    const url = 'https://api.github.com/users/' + login;
+    const url = this.baseUrl + 'users/' + login;
     return this.https.get<User>(url);
   }
 }
