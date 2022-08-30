@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(select(loggedUsersSelector))
       .subscribe((state) => {
         if (state.user.id !== -1) {
-          this.router.navigate(['/users/list']);
+          this.router.navigate(['/users']);
         }
       });
   }
@@ -52,6 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   setUser() {
+    console.log('som klikol');
     const user = {
       login: 'Unknown',
       followers: -1,

@@ -59,8 +59,7 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
   constructor(
     private githubService: GithubService,
     private store: Store<UsersStateInterface>,
-    private router: Router,
-    private snackBarService: SnackBarService
+    private router: Router
   ) {
     this.treeControl = new FlatTreeControl<DynamicFlatNode>(
       this.getLevel,
@@ -81,7 +80,7 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
     this.dataToTree$ = this.store
       .pipe(select(usersSelector))
       .subscribe((users) => {
-        this.dataSource.data = JSON.parse(JSON.stringify(users));
+        if (users) this.dataSource.data = JSON.parse(JSON.stringify(users));
       });
 
     this.loadLoggedUser();
@@ -96,22 +95,29 @@ export class UsersTreeComponent implements OnInit, OnDestroy {
     this.loggedUser$ = this.store
       .select(loggedUsersSelector)
       .subscribe((state) => {
-        this.loggedUser = state.user;
+        if (state) this.loggedUser = state.user;
       });
   }
 
-  loadMoreUsers() {
-    const lastUserId = Math.max(
-      ...this.dataSource.data.map((o) => {
-        if (o && o.user !== undefined) {
-          return o.user.id;
-        } else {
-          return 0;
-        }
-      })
-    );
+  findMaxId(): number {
+    let maxId = 0;
+    if (this.dataSource.data.length > 0) {
+      maxId = Math.max(
+        ...this.dataSource.data.map((o) => {
+          if (o && o.user !== undefined) {
+            return o.user.id;
+          } else {
+            return 0;
+          }
+        })
+      );
+    }
+    return maxId;
+  }
 
-    this.store.dispatch(retrieveUsers({ fromUserId: lastUserId }));
+  loadMoreUsers() {
+    const maxId = this.findMaxId();
+    this.store.dispatch(retrieveUsers({ fromUserId: maxId }));
   }
 
   handleChange(node: DynamicFlatNode) {

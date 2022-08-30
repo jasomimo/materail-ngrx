@@ -1,3 +1,4 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserCardComponent } from './user-card.component';
@@ -8,9 +9,9 @@ describe('UserCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserCardComponent ]
-    })
-    .compileComponents();
+      declarations: [UserCardComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UserCardComponent);
     component = fixture.componentInstance;

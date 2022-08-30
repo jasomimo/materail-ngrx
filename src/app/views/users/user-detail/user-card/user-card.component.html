@@ -1,4 +1,4 @@
-<mat-card class="example-card">
+<mat-card class="example-card" *ngIf="user">
   <mat-card-title-group>
     <mat-card-title>{{ user.login }}</mat-card-title>
     <mat-card-subtitle>{{ user.name }}</mat-card-subtitle>

@@ -35,7 +35,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   getUserRepos() {
-    if (this.user.repos_url)
+    if (this.user.repos_url && this.user)
       this.githubService.getRepsitoriesOfUser(this.user.repos_url)?.subscribe(
         (allRepos) => {
           this.tableComponent.setRepo(allRepos);

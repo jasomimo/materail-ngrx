@@ -22,8 +22,9 @@
       </section>
     </form>
     <button
+      id="buttonNoLogin"
       mat-raised-button
-      routerLink="/users/list"
+      routerLink="/users"
       [disabled]="isLoading$ | async"
       (click)="setUser()"
     >

@@ -4,11 +4,15 @@ import {
   SelectionChange,
 } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, merge, map } from 'rxjs';
 import { DynamicFlatNode } from 'src/app/models/DynamicFlatNode';
 import { Repo } from 'src/app/models/Repo';
 import { GithubService } from 'src/app/services/github.service';
 
+@Injectable({
+  providedIn: 'root',
+})
 export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   dataChange = new BehaviorSubject<DynamicFlatNode[]>([]);
 
@@ -80,10 +84,17 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
             return;
           }
 
-          const nodes = children.map(
-            (name) =>
-              new DynamicFlatNode(node.level + 1, false, false, undefined, name)
-          );
+          const nodes = children.map((name) => {
+            const nameMapped: DynamicFlatNode = {
+              level: node.level + 1,
+              expandable: false,
+              isLoading: false,
+              user: undefined,
+              repos: name,
+            };
+            // (node.level + 1, false, false, undefined, name, )
+            return nameMapped;
+          });
           node.isLoading = false;
           this.data.splice(index + 1, 0, ...nodes);
           this.dataChange.next(this.data);

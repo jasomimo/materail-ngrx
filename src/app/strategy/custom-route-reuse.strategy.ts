@@ -37,7 +37,7 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
     if (
       !route.routeConfig ||
       route.routeConfig.loadChildren ||
-      !route.routeConfig.path
+      route.routeConfig.path === undefined
     ) {
       return null;
     }
@@ -49,5 +49,9 @@ export class CustomRouteReuseStrategy implements RouteReuseStrategy {
     curr: ActivatedRouteSnapshot
   ): boolean {
     return future.routeConfig === curr.routeConfig;
+  }
+
+  clear() {
+    this.storedRoutes.clear();
   }
 }

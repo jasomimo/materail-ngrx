@@ -11,7 +11,7 @@ const routes: Routes = [
     component: ViewComponent,
     children: [
       {
-        path: 'list',
+        path: '',
         component: UsersTreeComponent,
         data: {
           reuseComponent: true,
