@@ -64,7 +64,7 @@ describe('RepoTableComponent', () => {
       active: 'description',
       direction: 'asc',
     };
-    const table: MatTable<Repo[]> = document.getElementById('repoTable');
+    const table = document.getElementById('repoTable');
 
     console.log('tabulkaris', table);
     component.announceSortChange(sort);

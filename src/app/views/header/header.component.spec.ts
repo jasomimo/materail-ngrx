@@ -22,7 +22,7 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should logout', () => {
+  it('when click on logout icon than distpach should be called', () => {
     const dispatchSpy = spyOn(storeMock, 'dispatch').and.callThrough(); // spy on the store
     const logoutIcon = fixture.debugElement.query(
       By.css('.logoutIcon')

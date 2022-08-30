@@ -44,13 +44,14 @@ describe('LoginComponent', () => {
         public_repos: -1,
       },
     });
+    //TODO check if route was redirected
   }));
 
-  it('should destroy', () => {
+  it('when destroy than unsubscribe', () => {
     component.ngOnDestroy();
     expect(component.loggedUser$.closed).toBe(true);
   });
-  it('mock check', () => {
+  it('when setUser than dispatch called', () => {
     const dispatchSpy = spyOn(store, 'dispatch').and.callThrough(); // spy on the store
     component.setUser();
     expect(dispatchSpy).toHaveBeenCalledTimes(1);

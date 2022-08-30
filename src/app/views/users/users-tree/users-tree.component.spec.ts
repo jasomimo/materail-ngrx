@@ -44,6 +44,15 @@ describe('UsersTreeComponent', () => {
     },
   };
 
+  const myUser = {
+    login: 'TestUser',
+    followers: 1,
+    avatar_url: 'https://avatars.githubusercontent.com/u/9919?s=40&v=4',
+    id: 2,
+    name: 'test user',
+    public_repos: -1,
+  };
+
   beforeEach(async () => {
     const githubServiceSpy = jasmine.createSpyObj<GithubService>('myNAme', [
       'getUsers',
@@ -77,15 +86,6 @@ describe('UsersTreeComponent', () => {
     };
     store = TestBed.inject(MockStore);
 
-    const myUser = {
-      login: 'TestUser',
-      followers: 1,
-      avatar_url: 'https://avatars.githubusercontent.com/u/9919?s=40&v=4',
-      id: 2,
-      name: 'test user',
-      public_repos: -1,
-    };
-
     const fullUsers: FullUserStateInterface = {
       isLoading: false,
       error: '',
@@ -100,7 +100,7 @@ describe('UsersTreeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should be unknown user', () => {
+  it('when user is loaded than should be set in loggedUser', () => {
     store.overrideSelector(loggedUsersSelector, {
       error: '',
       isLoading: false,
@@ -116,7 +116,7 @@ describe('UsersTreeComponent', () => {
     component.loadLoggedUser();
     expect(component.loggedUser.id).toEqual(2);
   });
-  it('should be expandable', () => {
+  it('when dynamicNode is not expandable than isExpandable should return false', () => {
     const dynamicFlatNode: DynamicFlatNode = {
       expandable: false,
       isLoading: false,
@@ -127,17 +127,18 @@ describe('UsersTreeComponent', () => {
     expect(component.getLevel(dynamicFlatNode)).toBe(1);
     expect(component.hasChild(1, dynamicFlatNode)).toBe(false);
   });
-  it('should download user data ', () => {
+  it('when new node, getUser should be called', () => {
+    spyOn(component, 'getUser');
     component.selectedNode = dynamicFlatNode;
     component.handleChange(dynamicFlatNode2);
-    expect(component.selectedUser?.id).toBe(undefined);
+    expect(component.getUser).toHaveBeenCalled();
   });
   it('when same node as clicked, than selected user should be null', () => {
     component.selectedNode = JSON.parse(JSON.stringify(dynamicFlatNode2));
     component.handleChange(dynamicFlatNode2);
     expect(component.selectedUser).toBe(null);
   });
-  it('find biggest id', () => {
+  it('when findMax than maxId should be returned', () => {
     component.dataSource.data = [dynamicFlatNode, dynamicFlatNode2];
     const biggestId = component.findMaxId();
     expect(biggestId).toEqual(24);
@@ -150,11 +151,28 @@ describe('UsersTreeComponent', () => {
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('find biggest id in empty array', () => {
+  it('when empty array than return 0', () => {
     let mydynamicFlatNode = dynamicFlatNode;
     mydynamicFlatNode.user = undefined;
     component.dataSource.data = [mydynamicFlatNode];
     const biggestId = component.findMaxId();
     expect(biggestId).toEqual(0);
+  });
+  it('when user not in store than load full user should be called', () => {
+    spyOn(component, 'loadFullUser');
+    component.getUser();
+    expect(component.loadFullUser).toHaveBeenCalled();
+  });
+  it('when user in store than selectedUser shoul be same', () => {
+    component.selectedNode = dynamicFlatNode;
+    component.selectedNode.user = myUser;
+    component.getUser();
+    expect(component.selectedUser?.id).toEqual(myUser.id);
+  });
+  it('when load full user than dispatch should be called', () => {
+    const dispatchSpy = spyOn(store, 'dispatch').and.callThrough(); // spy on the store
+    component.selectedNode = dynamicFlatNode;
+    component.loadFullUser();
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
   });
 });
