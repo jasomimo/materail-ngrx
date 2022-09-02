@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { routes } from 'src/app/app-routing.module';
@@ -9,13 +10,19 @@ import { GithubService } from 'src/app/services/github.service';
 import { selectFullUser } from 'src/app/store/fullUser/users/usersList.selectors';
 import { loggedUsersSelector } from 'src/app/store/loggedUser/users/loggedUser.selectors';
 import { usersSelector } from 'src/app/store/users/user.selectors';
-
+import * as _ from 'lodash';
 import { UsersTreeComponent } from './users-tree.component';
 
 describe('UsersTreeComponent', () => {
   let component: UsersTreeComponent;
   let fixture: ComponentFixture<UsersTreeComponent>;
   let store: MockStore;
+
+  // let router = {
+  //   navigate: jasmine.createSpy('navigate'),
+  // };
+
+  // router.navigate.and.returnValue(of(true));
 
   let dynamicFlatNode: DynamicFlatNode = {
     expandable: false,
@@ -65,6 +72,7 @@ describe('UsersTreeComponent', () => {
       declarations: [UsersTreeComponent],
       imports: [RouterTestingModule.withRoutes(routes)],
       providers: [
+        // { provide: Router, useValue: router },
         { provide: GithubService, useValue: githubServiceSpy },
         provideMockStore({ initialState: [] }),
       ],
@@ -134,12 +142,15 @@ describe('UsersTreeComponent', () => {
     expect(component.getUser).toHaveBeenCalled();
   });
   it('when same node as clicked, than selected user should be null', () => {
-    component.selectedNode = JSON.parse(JSON.stringify(dynamicFlatNode2));
-    component.handleChange(dynamicFlatNode2);
+    component.selectedNode = _.cloneDeep(dynamicFlatNode2);
+    component.handleChange(_.cloneDeep(dynamicFlatNode2));
     expect(component.selectedUser).toBe(null);
   });
   it('when findMax than maxId should be returned', () => {
-    component.dataSource.data = [dynamicFlatNode, dynamicFlatNode2];
+    component.dataSource.data = [
+      _.cloneDeep(dynamicFlatNode),
+      _.cloneDeep(dynamicFlatNode2),
+    ];
     const biggestId = component.findMaxId();
     expect(biggestId).toEqual(24);
   });
@@ -152,9 +163,9 @@ describe('UsersTreeComponent', () => {
   });
 
   it('when empty array than return 0', () => {
-    let mydynamicFlatNode = dynamicFlatNode;
+    let mydynamicFlatNode = _.cloneDeep(dynamicFlatNode);
     mydynamicFlatNode.user = undefined;
-    component.dataSource.data = [mydynamicFlatNode];
+    component.dataSource.data = [_.cloneDeep(mydynamicFlatNode)];
     const biggestId = component.findMaxId();
     expect(biggestId).toEqual(0);
   });
@@ -164,15 +175,26 @@ describe('UsersTreeComponent', () => {
     expect(component.loadFullUser).toHaveBeenCalled();
   });
   it('when user in store than selectedUser shoul be same', () => {
-    component.selectedNode = dynamicFlatNode;
-    component.selectedNode.user = myUser;
+    component.selectedNode = _.cloneDeep(dynamicFlatNode);
+    component.selectedNode.user = _.cloneDeep(myUser);
     component.getUser();
     expect(component.selectedUser?.id).toEqual(myUser.id);
   });
   it('when load full user than dispatch should be called', () => {
     const dispatchSpy = spyOn(store, 'dispatch').and.callThrough(); // spy on the store
-    component.selectedNode = dynamicFlatNode;
+    component.selectedNode = _.cloneDeep(dynamicFlatNode);
     component.loadFullUser();
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
+  });
+  it('when set user, router navigate should be called', () => {
+    const router = TestBed.inject(Router);
+    const myTestPromise = new Promise<boolean>((resolve, reject) => {
+      resolve(true);
+    });
+    const navigateSpy = spyOn(router, 'navigate').and.returnValue(
+      myTestPromise
+    );
+    component.setUserInStore(_.cloneDeep(dynamicFlatNode));
+    expect(navigateSpy).toHaveBeenCalledWith(['/users/mojombo']);
   });
 });

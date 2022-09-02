@@ -1,4 +1,6 @@
+import { HttpRequest } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { AppModule } from 'src/app/app.module';
 
 import { GithubInterceptor } from './github.interceptor';
@@ -6,8 +8,7 @@ import { GithubInterceptor } from './github.interceptor';
 describe('GithubInterceptor', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      providers: [GithubInterceptor],
-      imports: [AppModule],
+      providers: [GithubInterceptor, provideMockStore({ initialState: [] })],
     })
   );
 

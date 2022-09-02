@@ -22,7 +22,7 @@ describe('ViewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('when start than should be initialized', () => {
     expect(component).toBeTruthy();
   });
 });

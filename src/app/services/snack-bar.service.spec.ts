@@ -13,7 +13,7 @@ describe('SnackBarService', () => {
     service = TestBed.inject(SnackBarService);
   });
 
-  it('should be created', () => {
+  it('when start than should be initialized', () => {
     expect(service).toBeTruthy();
   });
 });

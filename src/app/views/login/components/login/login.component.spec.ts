@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 
 import { Location } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -9,6 +9,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { routes } from 'src/app/app-routing.module';
 import { loggedUsersSelector } from 'src/app/store/loggedUser/users/loggedUser.selectors';
 import { LoginComponent } from './login.component';
+import { LoggedUserStateInterface } from 'src/app/models/stateModels/LoggedUserStateInterface';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -24,15 +25,7 @@ describe('LoginComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    location = TestBed.inject(Location);
-    store = TestBed.inject(MockStore);
-    fixture = TestBed.createComponent(LoginComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('when logged user than redirect ', fakeAsync(() => {
-    store.overrideSelector(loggedUsersSelector, {
+    let user: LoggedUserStateInterface = {
       error: '',
       isLoading: false,
       user: {
@@ -43,8 +36,22 @@ describe('LoginComponent', () => {
         name: 'test user',
         public_repos: -1,
       },
-    });
-    //TODO check if route was redirected
+    };
+
+    location = TestBed.inject(Location);
+    store = TestBed.inject(MockStore);
+    store.overrideSelector(loggedUsersSelector, user);
+
+    fixture = TestBed.createComponent(LoginComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('when logged user than redirect ', fakeAsync(() => {
+    const router = TestBed.inject(Router);
+    const navigateSpy = spyOn(router, 'navigate');
+    component.ngOnInit();
+    expect(navigateSpy).toHaveBeenCalledWith(['/users']);
   }));
 
   it('when destroy than unsubscribe', () => {

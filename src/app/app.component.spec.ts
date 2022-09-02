@@ -11,21 +11,15 @@ describe('AppComponent', () => {
     }).compileComponents();
   });
 
-  it('should create the app', () => {
+  it('when created, than component should be initialized', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'angular-github'`, () => {
+  it(`when checking title, than angualr-github should be'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('angular-github');
-  });
-  it('navigates to another route when (...)', () => {
-    // The type annotation can be left out as it's inferred from `TestBed.inject`
-    // const location: Location = TestBed.inject(Location);
-    // // (...)
-    // expect(location.path()).toBe('/some/other/route');
   });
 });

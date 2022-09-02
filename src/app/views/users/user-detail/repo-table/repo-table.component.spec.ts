@@ -21,11 +21,11 @@ describe('RepoTableComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('when created, than should be initialized', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should has repo', () => {
+  it('when add 1 repos, than lenght should be 1', () => {
     let repo: Repo = {
       created_at: '2022',
       description: 'desc',
@@ -38,38 +38,5 @@ describe('RepoTableComponent', () => {
     const repos: Repo[] = [repo];
     component.setRepo(repos);
     expect(component.repositories.length).toBe(1);
-  });
-  it('when sort that data should be sorted', () => {
-    let repo: Repo = {
-      created_at: '2022',
-      description: 'adesc',
-      id: 1,
-      name: 'myRepo',
-      stargazers_count: 14,
-      updated_at: '2023',
-      watchers: 25,
-    };
-    let repo2: Repo = {
-      created_at: '2022',
-      description: 'bdesc',
-      id: 1,
-      name: 'myRepo',
-      stargazers_count: 14,
-      updated_at: '2023',
-      watchers: 25,
-    };
-    const repos: Repo[] = [repo, repo2];
-    component.setRepo(repos);
-    let sort: Sort = {
-      active: 'description',
-      direction: 'asc',
-    };
-    const table = document.getElementById('repoTable');
-
-    console.log('tabulkaris', table);
-    component.announceSortChange(sort);
-    sort.direction = '';
-    component.announceSortChange(sort);
-    // expect(component.repositories.length).toBe(1);
   });
 });
