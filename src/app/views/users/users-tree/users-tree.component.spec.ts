@@ -72,7 +72,6 @@ describe('UsersTreeComponent', () => {
       declarations: [UsersTreeComponent],
       imports: [RouterTestingModule.withRoutes(routes)],
       providers: [
-        // { provide: Router, useValue: router },
         { provide: GithubService, useValue: githubServiceSpy },
         provideMockStore({ initialState: [] }),
       ],

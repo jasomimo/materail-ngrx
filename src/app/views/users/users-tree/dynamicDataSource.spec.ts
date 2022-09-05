@@ -14,8 +14,7 @@ import { DynamicDataSource } from './dynamicDataSource';
 
 describe('DynamicDataSource', () => {
   let service: DynamicDataSource;
-  let flatTreeSpy: any;
-  let githubServiceSpy: jasmine.SpyObj<GithubService>;
+
   const mockSelectionChange: SelectionChange<DynamicFlatNode> = {
     added: [],
     removed: [],
@@ -24,14 +23,6 @@ describe('DynamicDataSource', () => {
 
   let mockChangedSubjec: Subject<SelectionChange<DynamicFlatNode>> =
     new BehaviorSubject<SelectionChange<DynamicFlatNode>>(mockSelectionChange);
-
-  const mockExpansionModel = {
-    changed: of(mockSelectionChange),
-  };
-
-  const mockFlatTreeContorl = {
-    expansionModel: mockExpansionModel,
-  };
 
   const mockExpansionModelObj = jasmine.createSpyObj<
     SelectionModel<DynamicFlatNode>
@@ -61,13 +52,6 @@ describe('DynamicDataSource', () => {
   };
 
   beforeEach(async () => {
-    flatTreeSpy = jasmine.createSpyObj<FlatTreeControl<DynamicFlatNode>>(
-      'myFlatTree',
-      {
-        expansionModel: jasmine.createSpyObj('expansionModel', ['changed'], {}),
-      }
-    );
-
     let repo: Repo = {
       created_at: '2022',
       description: 'adesc',
@@ -91,7 +75,7 @@ describe('DynamicDataSource', () => {
     const githubServiceSpy = jasmine.createSpyObj<GithubService>('myNAme', {
       getRepsitoriesOfUser: of(obsReturn),
     });
-    // flatTreeSpy.expansionModel.
+
     await TestBed.configureTestingModule({
       providers: [
         { provide: FlatTreeControl, useValue: mockFlatTreeContorlObj },
@@ -105,7 +89,7 @@ describe('DynamicDataSource', () => {
     expect(service).toBeTruthy();
   });
 
-  it('test', () => {
+  it('when connect, than handle tree control should be called', () => {
     const colc: CollectionViewer = {
       viewChange: of({} as ListRange),
     };

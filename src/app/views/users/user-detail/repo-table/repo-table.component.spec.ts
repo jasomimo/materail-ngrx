@@ -1,7 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Sort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
 import { Repo } from 'src/app/models/Repo';
 
 import { RepoTableComponent } from './repo-table.component';

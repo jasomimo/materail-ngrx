@@ -59,12 +59,12 @@ describe('LoginComponent', () => {
     expect(component.loggedUser$.closed).toBe(true);
   });
   it('when setUser than dispatch called', () => {
-    const dispatchSpy = spyOn(store, 'dispatch').and.callThrough(); // spy on the store
+    const dispatchSpy = spyOn(store, 'dispatch').and.callThrough();
     component.setUser();
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
   });
   it('when user click on login, than token should be dispatch to effect', () => {
-    const dispatchSpy = spyOn(store, 'dispatch').and.callThrough(); // spy on the store
+    const dispatchSpy = spyOn(store, 'dispatch').and.callThrough();
     component.loginForm.patchValue({
       token: 'test token',
     });
